@@ -205,6 +205,7 @@ table.mini td{padding:8px 4px;min-height:40px;}
       <button class="btn-ghost" id="endBtn" style="display:none">结束记录</button>
       <button class="btn-ghost" id="resetFocus">重置本次</button>
       <div class="timer-show" id="focusTime">00:00:00</div>
+      <div style="font-size:12px;color:#6b7280;width:100%;margin-top:4px;">💡iPad提示：切后台时数字会暂停跳动，切回页面自动补全真实时长</div>
     </div>
     <div class="table-scroll">
       <table id="planTable">
@@ -593,6 +594,7 @@ function renderAdjust(){
   };
   $("#adjustMin").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#adjustAdd").click(); });
 }
+
 /* ================= 专注记录（支持暂停） ================= */
 function currentLog(){
   const last = state.logs[state.logs.length-1];
@@ -623,15 +625,27 @@ function renderLogs(){
     box.appendChild(item);
   });
 }
+
 let timerId=null;
+
+// tick：只负责UI刷新，不做秒数累加；全部靠时间戳差值算真实时长
 function tick(){
-  state.eff[state.curSubject] = (state.eff[state.curSubject]||0)+1;
   const last = currentLog();
-  if(last) last.sec++;
-  $("#focusTime").textContent = fmtHMS(last?last.sec:0);
+  if(!last) return;
+
+  let totalSec = last.pausedSec || 0;
+  if(state.timerState === "running"){
+      const deltaMs = Date.now() - last.startTs;
+      totalSec += Math.floor(deltaMs / 1000);
+  }
+  last.sec = totalSec;
+  state.eff[state.curSubject] = totalSec;
+
+  $("#focusTime").textContent = fmtHMS(last.sec);
   updateLiveNumbers();
   scheduleSave();
 }
+
 function syncTimerUI(){
   const btn=$("#timerBtn"), end=$("#endBtn");
   const st=state.timerState;
@@ -641,42 +655,81 @@ function syncTimerUI(){
   const last=currentLog();
   $("#focusTime").textContent = fmtHMS(last?last.sec:0);
 }
+
 $("#timerBtn").onclick=()=>{
   if(state.timerState==="idle"){
-    // 开始新记录
+    // 开启新计时，记录时间戳
     state.curSubject=$("#subjectSel").value;
     state.curContent=$("#curContent").value.trim();
-    state.logs.push({subject:state.curSubject, content:state.curContent, start:nowStr(), end:null, sec:0});
+    state.logs.push({
+      subject:state.curSubject,
+      content:state.curContent,
+      start:nowStr(),
+      startTs: Date.now(),
+      pausedSec:0,
+      end:null,
+      sec:0
+    });
     state.timerState="running";
     timerId=setInterval(tick,1000);
   }else if(state.timerState==="running"){
-    // 暂停：不归档，停表
+    // 暂停：把已经跑过的时间存入pausedSec
     clearInterval(timerId);
+    const last=currentLog();
+    if(last){
+      const deltaMs = Date.now() - last.startTs;
+      last.pausedSec = last.pausedSec || 0;
+      last.pausedSec += Math.floor(deltaMs / 1000);
+    }
     state.timerState="paused";
   }else if(state.timerState==="paused"){
-    // 继续
+    // 继续：重置开始时间戳，保留历史累计pausedSec
+    const last=currentLog();
+    if(last){
+       last.startTs = Date.now();
+    }
     state.timerState="running";
     timerId=setInterval(tick,1000);
   }
   saveDB(); syncTimerUI(); refreshStats();
 };
+
 $("#endBtn").onclick=()=>{
   const last=currentLog();
-  if(last){ last.end=nowStr(); }
+  if(last){
+    clearInterval(timerId);
+    let totalSec = last.pausedSec || 0;
+    if(state.timerState === "running"){
+        const deltaMs = Date.now() - last.startTs;
+        totalSec += Math.floor(deltaMs / 1000);
+    }
+    last.sec = totalSec;
+    state.eff[state.curSubject] = totalSec;
+    last.end=nowStr();
+  }
   clearInterval(timerId);
   state.timerState="idle";
   saveDB(); syncTimerUI(); refreshStats();
 };
+
 $("#resetFocus").onclick=()=>{
   clearInterval(timerId);
   state.logs = state.logs.filter(l=>l.end);
   state.timerState="idle";
   saveDB(); syncTimerUI(); refreshStats();
 };
+
 $("#addRow").onclick=()=>{
   state.rows.push({slot:"新时段",time:"",content:"",cat:"西综",plan:60});
   renderRows(); saveDB(); refreshStats();
 };
+
+// 页面切回前台，立刻执行一次时间计算，不用等1秒定时器
+document.addEventListener('visibilitychange', ()=>{
+  if (!document.hidden) {
+    tick();
+  }
+});
 /* ================= 日期编辑联动 ================= */
 $("#planDate").addEventListener("blur",e=>{
   let v=e.target.textContent.trim();
@@ -908,3 +961,4 @@ syncTimerUI();
 </script>
 </body>
 </html>
+<!-- （注：内容由AI生成） -->
