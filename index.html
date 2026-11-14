@@ -1054,6 +1054,7 @@ function endTimer(silent){
   timer.phase = "focus";
   timer.phaseTotal = settings.pomFocus * 60;
 
+  recalcEff(state);
   renderTimer();
   refreshLogs();
   refreshStats();
@@ -1071,19 +1072,34 @@ function cancelTimer(){
     toast("当前没有进行中的计时");
     return;
   }
+
   const {day, log} = findLog();
-  if(log && day){
-    const i = day.logs.indexOf(log);
-    if(i >= 0) day.logs.splice(i, 1);
-    recalcEff(day);
-  }
+  const targetDayKey = timer.dayKey;
+  const targetLogId = timer.logId;
+
   stopTick();
+
+  // 必须先清空计时状态，否则统计会把"这一段的实时秒数"继续算进去
   timer.status = "idle";
   timer.startMs = null;
   timer.elapsed = 0;
   timer.logId = null;
   timer.phase = "focus";
   timer.phaseTotal = settings.pomFocus * 60;
+
+  // 再删掉这条记录
+  if(day && log){
+    const i = day.logs.indexOf(log);
+    if(i >= 0) day.logs.splice(i, 1);
+  }else if(targetDayKey && db.days[targetDayKey] && targetLogId){
+    db.days[targetDayKey].logs = db.days[targetDayKey].logs.filter(l => l.id !== targetLogId);
+  }
+
+  recalcEff(state);
+  if(targetDayKey && db.days[targetDayKey] && db.days[targetDayKey] !== state){
+    recalcEff(db.days[targetDayKey]);
+  }
+
   renderTimer();
   refreshLogs();
   refreshStats();
@@ -1107,9 +1123,9 @@ function restoreTimer(){
   timer.dayKey = db.days[t.dayKey] ? t.dayKey : activeDate;
 
   if(t.status === "running"){
-    // 页面关掉期间的空白时间不能白算，统一恢复成"暂停"状态
+    // 完全按真实时间接续：关闭/休眠期间的时间也如实计入，不做任何截断
     const gap = t.startMs ? Math.max(0, Math.floor((Date.now() - num(t.startMs))/1000)) : 0;
-    timer.elapsed = Math.min(num(t.elapsed) + Math.min(gap, 120), timer.phaseTotal || 12*3600);
+    timer.elapsed = Math.max(0, num(t.elapsed)) + gap;
     timer.status = "paused";
     timer.startMs = null;
     timer.logId = t.logId || null;
@@ -1380,6 +1396,7 @@ function moveRow(i, dir){
 }
 
 function refreshStats(){
+  recalcEff(state);
   const planMin = planMinTotal(state);
   const effMin = effMinTotal(state);
   const rate = rateOf(state);
@@ -1425,6 +1442,7 @@ function updateRowEffCells(){
 }
 
 function updateLiveNumbers(){
+  recalcEff(state);
   const planMin = planMinTotal(state);
   const effMin = effMinTotal(state);
   const rate = rateOf(state);
