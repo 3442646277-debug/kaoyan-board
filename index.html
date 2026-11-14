@@ -2,963 +2,2280 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-<!-- iPad / iOS PWA 配置：添加到主屏幕全屏运行 -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#237c60">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23237c60'/%3E%3Ctext x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E考%3C/text%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23237c60'/%3E%3Ctext x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E考%3C/text%3E%3C/svg%3E">
-<title>每日学习规划｜2027考研·急诊专硕</title>
+<title>考研每日学习规划</title>
 <style>
 :root{
   --green:#237c60;
-  --green-d:#1c634c;
+  --green-d:#1a5e49;
   --cream:#fdf6dd;
   --line:#d9d2b8;
   --text:#222;
   --dim:#6b7280;
-  --bg:rgba(255,255,255,0.06);
+  --page:#e8ece8;
+  --card:#fff;
+  --gold:#b08a3e;
+  --red:#d9534f;
 }
-*{margin:0;padding:0;box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
-  font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
-  background:var(--bg);color:var(--text);padding:12px;display:flex;justify-content:center;
+  font-family:"PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--page);color:var(--text);
+  padding:14px;display:flex;justify-content:center;min-height:100vh;
+  -webkit-text-size-adjust:100%;overflow-x:hidden;
 }
-.wrap{width:100%;max-width:960px;background:rgba(255,255,255,0.92);border-radius:14px;overflow:hidden;}
-.top-bar{display:flex;align-items:center;gap:10px;background:var(--green);padding:12px 14px;}
-.top-bar .brand{color:#fff;font-size:18px;font-weight:700;letter-spacing:0.03em;flex:1;}
-.top-bar .tabs{display:flex;gap:8px;}
-.top-bar .tabs button{background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:15px;cursor:pointer;min-height:44px;min-width:70px;}
+.wrap{width:100%;max-width:980px;min-width:0;background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.06);height:fit-content;}
+.top-bar{display:flex;align-items:center;gap:10px;background:var(--green);padding:10px 14px;flex-wrap:wrap;}
+.top-bar .brand{color:#fff;font-size:17px;font-weight:700;letter-spacing:.02em;flex:1;min-width:150px;}
+.top-bar .tabs{display:flex;gap:6px;flex-wrap:wrap;}
+.top-bar .tabs button{background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:8px;padding:7px 13px;font-size:13.5px;cursor:pointer;transition:background .15s;}
+.top-bar .tabs button:hover{background:rgba(255,255,255,.28);}
 .top-bar .tabs button.active{background:#fff;color:var(--green);font-weight:600;}
-.info-grid{display:grid;grid-template-columns:repeat(6,1fr);font-size:14px;}
-.info-cell{padding:12px 8px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:4px;min-height:64px;}
-.info-cell .k{font-size:12px;color:var(--dim);}
-.info-cell .v{font-weight:600;font-size:15px;}
+.info-grid{display:grid;grid-template-columns:repeat(6,1fr);font-size:13.5px;border-bottom:1px solid var(--line);}
+.info-cell{padding:9px 8px;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:3px;}
+.info-cell:last-child{border-right:none;}
+.info-cell .k{font-size:11.5px;color:var(--dim);}
+.info-cell .v{font-weight:600;text-align:center;}
 .info-cell.hl{background:var(--cream);}
-.info-cell .v[contenteditable="true"]{outline:none;border-bottom:1px dashed transparent;min-height:30px;}
-.info-cell .v[contenteditable="true"]:hover{border-bottom-color:#bbb;}
-.hl-num{background:#fff200;font-weight:700;padding:2px 10px;border-radius:6px;font-size:16px;}
-.auto-dim{color:var(--dim);font-weight:500;}
-.count-bar{background:var(--green);color:#fff;text-align:center;padding:12px;font-size:18px;font-weight:600;letter-spacing:0.03em;}
-.ctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px 14px;background:#f4f1e6;border-bottom:1px solid var(--line);font-size:14px;}
-.ctrl label{color:var(--dim);}
-.ctrl select{padding:10px 10px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff;min-height:44px;}
-.ctrl .content-input{flex:1;min-width:140px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;min-height:44px;}
-button{border:none;border-radius:10px;padding:10px 14px;font-size:15px;cursor:pointer;min-height:44px;min-width:64px;}
+.editable{outline:none;border-bottom:1px dashed transparent;padding:0 2px;cursor:text;}
+.editable:hover{border-bottom-color:#bbb;}
+.editable:focus{border-bottom-color:var(--green);background:#fff;}
+.hl-num{background:#fff200;font-weight:700;padding:1px 8px;border-radius:4px;}
+.count-bar{background:var(--green);color:#fff;text-align:center;padding:9px;font-size:16.5px;font-weight:600;letter-spacing:.02em;}
+.circle-timer-wrap{
+  padding:18px 14px;display:flex;flex-direction:column;align-items:center;gap:14px;
+  background:#f7f5ec;margin:0 14px 14px;border-radius:14px;border:1px solid var(--line);
+}
+.circle-svg-container{position:relative;width:236px;height:236px;flex:0 0 auto;}
+.circle-svg{width:100%;height:100%;transform:rotate(-90deg);}
+.circle-bg{fill:none;stroke:#e2ddd0;stroke-width:14;}
+.circle-progress{fill:none;stroke:var(--green);stroke-width:14;stroke-linecap:round;transition:stroke-dashoffset .35s linear,stroke .3s;}
+.circle-time-text{
+  position:absolute;top:47%;left:50%;transform:translate(-50%,-50%);
+  font-size:34px;font-weight:800;color:var(--green);
+  font-variant-numeric:tabular-nums;letter-spacing:1px;white-space:nowrap;
+}
+.circle-status{
+  position:absolute;top:65%;left:50%;transform:translate(-50%,0);
+  font-size:13px;color:var(--dim);text-align:center;width:90%;line-height:1.4;
+}
+.timer-info-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;max-width:720px;}
+.info-card{background:#fff;border:1px solid var(--line);border-radius:10px;text-align:center;padding:11px 8px;min-width:0;}
+.info-card .lab{font-size:12.5px;color:var(--dim);margin-bottom:4px;}
+.info-card .val{font-size:15px;font-weight:700;color:var(--green);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mode-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;font-size:13px;}
+button{border:none;border-radius:8px;padding:9px 18px;font-size:14px;cursor:pointer;font-family:inherit;transition:filter .15s,background .15s;}
+button:hover{filter:brightness(.96);}
 .btn-start{background:var(--green);color:#fff;font-weight:600;}
 .btn-ghost{background:#e8e4d6;color:var(--text);}
-.timer-show{font-size:28px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;margin-left:auto;min-height:44px;display:flex;align-items:center;}
-/* iPad重点：表格容器横向滚动，防止小屏挤爆 */
-.table-scroll{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:14px;min-width:720px;}
-th{background:var(--green);color:#fff;padding:10px 6px;border:1px solid var(--line);font-weight:600;}
-td{border:1px solid var(--line);padding:10px 6px;text-align:center;vertical-align:middle;min-height:44px;}
-td[contenteditable="true"]{outline:none;min-width:40px;min-height:40px;}
-td[contenteditable="true"]:hover{background:rgba(35,124,96,0.06);}
-td[contenteditable="true"]:focus{background:#fff;}
+.btn-warning{background:#c86b47;color:#fff;font-size:13px;padding:8px 14px;}
+.focus-input-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;width:100%;max-width:720px;font-size:13px;}
+.focus-input-row select,.focus-input-row input{
+  padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;background:#fff;outline:none;
+}
+.focus-input-row select:focus,.focus-input-row input:focus{border-color:var(--green);}
+.focus-input-row input{flex:1;min-width:180px;}
+.timer-buttons{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.todo-wrap{margin:0 14px 14px;border:1px solid var(--line);border-radius:14px;background:#fff;padding:14px;}
+.todo-item{display:flex;align-items:center;gap:8px;padding:9px 4px;border-bottom:1px dashed var(--line);font-size:13.5px;}
+.todo-item:last-of-type{border-bottom:none;}
+.todo-item.done .todo-text{text-decoration:line-through;color:var(--dim);}
+.todo-item input[type="checkbox"]{width:17px;height:17px;accent-color:var(--green);flex:0 0 auto;}
+.todo-item .todo-text{flex:1;min-width:0;word-break:break-word;}
+.todo-item .todo-meta{color:var(--dim);font-size:12px;flex:0 0 auto;}
+.todo-add-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.todo-add-row select,.todo-add-row input{padding:8px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#fff;outline:none;}
+.todo-add-row .todotxt{flex:1;min-width:160px;}
+.todo-add-row input[type=number]{width:100px;}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;min-width:0;max-width:100%;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:var(--green);color:#fff;padding:9px 4px;border:1px solid var(--line);font-weight:600;white-space:nowrap;}
+td{border:1px solid var(--line);padding:6px;text-align:center;vertical-align:middle;}
+.plan-table{min-width:800px;}
+td[contenteditable="true"]{outline:none;min-width:44px;cursor:text;}
+td[contenteditable="true"]:hover{background:rgba(35,124,96,.07);}
+td[contenteditable="true"]:focus{background:#fff;box-shadow:inset 0 0 0 2px rgba(35,124,96,.35);}
 td.plan{background:var(--cream);}
-.time-cell{display:flex;align-items:center;gap:6px;justify-content:center;}
-.time-cell input[type=time]{width:86px;padding:8px 6px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff;color:var(--text);min-height:44px;}
+td.eff-cell{color:var(--green);font-weight:600;}
+.time-cell{display:flex;align-items:center;gap:3px;justify-content:center;}
+.time-cell input[type=time]{width:104px;padding:3px 2px;border:1px solid var(--line);border-radius:6px;font-size:11.5px;background:#fff;color:var(--text);font-family:inherit;}
 .time-sep{color:var(--dim);}
-.drag-handle{cursor:grab;text-align:center;color:var(--dim);font-size:18px;user-select:none;touch-action:pan-y;}
+.drag-handle{cursor:grab;text-align:center;color:var(--dim);font-size:15px;user-select:none;touch-action:none;}
 .drag-handle:active{cursor:grabbing;}
-tr.dragging{opacity:0.5;}
-td select{padding:8px 6px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff;max-width:100%;min-height:40px;}
+tr.dragging{opacity:.45;}
+td select{padding:4px 6px;border:1px solid var(--line);border-radius:7px;font-size:12.5px;background:#fff;max-width:100%;font-family:inherit;}
 tr.rest td{background:#eceef0;color:var(--dim);}
 td.num{font-variant-numeric:tabular-nums;}
-.row-del{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;padding:6px 8px;border-radius:8px;min-height:44px;min-width:44px;}
-.row-del:hover{color:#e05555;background:rgba(224,85,85,0.1);}
-.add-row{width:100%;background:none;border-top:1px dashed var(--line);color:var(--dim);padding:12px;cursor:pointer;font-size:15px;min-height:48px;}
-.add-row:hover{color:var(--green);}
-.bottom{display:grid;grid-template-columns:1fr 1.1fr;gap:12px;padding:12px 14px;}
+.op-cell{white-space:nowrap;}
+.mini-btn{background:#eef1ec;border:none;color:#4b5563;border-radius:6px;font-size:12px;line-height:1;padding:4px 6px;margin:0 1px;cursor:pointer;}
+.mini-btn:hover{background:#dfe6de;}
+.mini-btn.danger:hover{background:rgba(217,83,79,.15);color:var(--red);}
+.swipe-hint{display:none;text-align:center;font-size:11.5px;color:var(--dim);padding:6px 0 0;}
+.add-row{width:100%;background:none;border:none;border-top:1px dashed var(--line);color:var(--dim);padding:10px;cursor:pointer;font-size:13px;border-radius:0;}
+.add-row:hover{color:var(--green);background:#fafaf5;}
+.bottom{display:grid;grid-template-columns:1fr 1.15fr;gap:12px;padding:12px 14px;}
 .box{border:1px solid var(--line);border-radius:12px;overflow:hidden;}
-.box-title{background:var(--green);color:#fff;text-align:center;padding:10px;font-weight:600;font-size:16px;}
-.box-body{padding:12px 14px;}
-.stat-line{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;gap:10px;min-height:36px;align-items:center;}
+.box-title{background:var(--green);color:#fff;text-align:center;padding:8px;font-weight:600;font-size:13.5px;}
+.box-body{padding:10px 12px;}
+.stat-line{display:flex;justify-content:space-between;padding:5px 0;font-size:13px;gap:10px;}
 .stat-line .k{color:var(--dim);}
 .stat-line .v{font-weight:600;font-variant-numeric:tabular-nums;}
-table.mini{font-size:13.5px;}
-table.mini th{background:#eef3f0;color:var(--text);}
-table.mini td{padding:8px 4px;min-height:40px;}
+table.mini{font-size:12.5px;}
+table.mini th{background:#eef3f0;color:var(--text);border-color:#dfe5df;}
+table.mini td{padding:6px 4px;}
 .log-section{padding:0 14px 14px;}
-.log-list{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
-.log-item{display:grid;grid-template-columns:1fr auto auto auto auto;gap:10px;align-items:center;background:#f7f5ec;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;min-height:64px;}
+.log-list{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.log-item{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center;background:#f7f5ec;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;}
 .log-item .log-content{min-width:0;}
-.log-item .log-content b{display:block;line-height:1.5;}
-.log-item .log-content span{color:var(--dim);font-size:12.5px;}
-.log-item .log-subj{background:var(--green);color:#fff;border-radius:8px;padding:6px 10px;font-size:13px;}
-.log-item .log-subj.paused{background:#b08a3e;}
+.log-item .log-content b{display:block;font-weight:600;word-break:break-word;}
+.log-item .log-content span{color:var(--dim);font-size:11.5px;}
+.log-item .log-subj{background:var(--green);color:#fff;border-radius:6px;padding:3px 9px;font-size:11.5px;white-space:nowrap;}
+.log-item .log-subj.paused{background:var(--gold);}
 .log-item .log-subj.manual{background:#5b7fa6;}
-.log-item .log-dur{font-variant-numeric:tabular-nums;font-weight:600;font-size:15px;}
-.log-item .log-del{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;padding:6px;min-height:44px;min-width:44px;}
-.log-item .log-del:hover{color:#e05555;}
-.log-empty{color:var(--dim);font-size:14px;text-align:center;padding:20px 0;}
+.log-item .log-dur{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;}
+.log-item .log-del{background:none;border:none;color:var(--dim);cursor:pointer;font-size:15px;padding:0 4px;line-height:1;}
+.log-item .log-del:hover{color:var(--red);}
+.log-empty{color:var(--dim);font-size:13px;text-align:center;padding:16px 0;}
 .view{display:none;}
 .view.active{display:block;}
-.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:14px;}
-.sum-card{border:1px solid var(--line);border-radius:14px;padding:16px 10px;text-align:center;min-height:110px;}
-.sum-card .num{font-size:26px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;}
-.sum-card .lbl{font-size:13px;color:var(--dim);margin-top:6px;}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px;}
+.sum-card{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;background:#fafaf5;}
+.sum-card .num{font-size:21px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;}
+.sum-card .lbl{font-size:12px;color:var(--dim);margin-top:4px;}
 .cal-wrap{padding:0 14px 14px;}
-.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.cal-head .month{font-size:17px;font-weight:600;}
-.cal-head button{background:#e8e4d6;padding:10px 14px;min-height:44px;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
-.cal-grid .dow{text-align:center;font-size:13px;color:var(--dim);padding:6px 0;}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;}
+.cal-head .month{font-size:15.5px;font-weight:600;}
+.cal-head button{background:#e8e4d6;padding:6px 11px;font-size:13px;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.cal-grid .dow{text-align:center;font-size:11.5px;color:var(--dim);padding:4px 0;}
 .cal-cell{
-  aspect-ratio:1;border:1px solid var(--line);border-radius:12px;padding:8px;
-  display:flex;flex-direction:column;justify-content:space-between;min-height:80px;cursor:pointer;
-  background:#faf8f0;transition:transform .1s;
+  border:1px solid var(--line);border-radius:10px;padding:5px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:62px;cursor:pointer;background:#faf8f0;
+  transition:transform .12s;overflow:hidden;
 }
-.cal-cell:hover{transform:scale(1.03);}
-.cal-cell .d{font-size:13px;color:var(--dim);}
-.cal-cell .h{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
-.cal-cell .p{font-size:12px;color:var(--dim);}
-.cal-cell.empty{background:transparent;border:none;cursor:default;}
-.cal-cell.empty:hover{transform:none;}
+.cal-cell:hover{transform:scale(1.04);}
+.cal-cell .d{font-size:11.5px;color:var(--dim);}
+.cal-cell .h{font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;}
+.cal-cell .p{font-size:10.5px;color:var(--dim);}
+.cal-cell.empty{background:transparent;border:none;cursor:default;pointer-events:none;}
+.cal-cell.today{outline:2px solid var(--green);outline-offset:-2px;}
 .lv0{background:#f3f1e8;}
 .lv1{background:#dcefe5;}
 .lv2{background:#a9ddc4;}
 .lv3{background:#6cc79c;}
 .lv4{background:#237c60;}
 .lv4 .h,.lv4 .p{color:#fff;}
-.lv4 .d{color:rgba(255,255,255,0.75);}
-.history-table{padding:0 14px 14px;overflow-x:auto;}
-.history-table table{font-size:14px;min-width:720px;}
-.history-table td{cursor:pointer;min-height:44px;}
-.history-table td:hover{background:rgba(35,124,96,0.06);}
+.lv4 .d{color:rgba(255,255,255,.78);}
+.history-table{padding:0 14px 14px;}
+.history-table table{font-size:12.5px;}
+.history-table tbody td{cursor:pointer;}
+.history-table tbody tr:hover td{background:rgba(35,124,96,.07);}
 .backup-box{margin:0 14px 14px;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
-.backup-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px;}
-.backup-tip{flex:1;min-width:200px;font-size:13px;color:var(--dim);line-height:1.7;}
-.adjust-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center;}
-.adjust-row select,.adjust-min{padding:10px 10px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff;min-height:44px;}
-.adjust-min{width:96px;}
-.adjust-row .content-input{flex:1;min-width:130px;min-height:44px;}
-.adjust-hint{width:100%;font-size:12.5px;color:var(--dim);margin-top:4px;line-height:1.6;}
-/* 日记 */
-.diary-wrap{padding:14px;display:flex;flex-direction:column;gap:14px;}
-.diary-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-.diary-head label{color:var(--dim);font-size:14px;}
-.diary-head input[type=date]{padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff;min-height:44px;}
-.diary-head .saved{margin-left:auto;font-size:13px;color:var(--dim);}
+.backup-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.backup-tip{flex:1;min-width:200px;font-size:12.5px;color:var(--dim);line-height:1.7;}
+.dir-text{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--green);word-break:break-all;background:#f7f5ec;border:1px dashed var(--line);border-radius:8px;padding:8px 10px;user-select:text;line-height:1.5;}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f2efe4;padding:1px 4px;border-radius:4px;font-size:12px;}
+.adjust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center;}
+.adjust-row select,.adjust-row input{padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#fff;outline:none;}
+.adjust-row input:focus,.adjust-row select:focus{border-color:var(--green);}
+#adjustMin{width:88px;}
+#adjustContent{flex:1;min-width:130px;}
+.adjust-hint{width:100%;font-size:11.5px;color:var(--dim);line-height:1.6;}
+.diary-wrap{padding:14px;display:flex;flex-direction:column;gap:12px;}
+.diary-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.diary-head label{color:var(--dim);font-size:13px;}
+.diary-head input[type=date]{padding:7px 10px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;background:#fff;outline:none;}
+.diary-head .saved{margin-left:auto;font-size:12px;color:var(--dim);}
 .diary-text{
-  width:100%;min-height:320px;resize:vertical;border:1px solid var(--line);border-radius:12px;
-  padding:16px;font-size:15px;line-height:1.8;font-family:inherit;background:#fff;outline:none;
+  width:100%;min-height:280px;resize:vertical;border:1px solid var(--line);border-radius:12px;
+  padding:14px;font-size:14px;line-height:1.85;font-family:inherit;background:#fff;outline:none;
 }
 .diary-text:focus{border-color:var(--green);}
-.diary-recent{display:flex;flex-direction:column;gap:10px;}
-.diary-recent h4{font-size:14px;color:var(--dim);font-weight:500;}
-.diary-item{background:#f7f5ec;border:1px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;min-height:70px;}
+.diary-recent{display:flex;flex-direction:column;gap:8px;}
+.diary-recent h4{font-size:13px;color:var(--dim);font-weight:500;}
+.diary-item{background:#f7f5ec;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;}
 .diary-item:hover{border-color:var(--green);}
-.diary-item .d{font-size:13px;color:var(--dim);margin-bottom:4px;}
-.diary-item .t{font-size:14px;line-height:1.6;white-space:pre-wrap;word-break:break-word;}
-.diary-empty{color:var(--dim);font-size:14px;text-align:center;padding:20px 0;}
-.mask{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:20;}
+.diary-item .d{font-size:12px;color:var(--dim);margin-bottom:3px;}
+.diary-item .t{font-size:13px;line-height:1.65;white-space:pre-wrap;word-break:break-word;}
+.diary-empty{color:var(--dim);font-size:13px;text-align:center;padding:16px 0;}
+.mask{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:30;}
 .mask.open{display:flex;}
-.panel{background:#fff;border:1px solid var(--line);border-radius:18px;width:100%;max-width:520px;padding:22px;}
-.panel h3{font-size:17px;margin-bottom:14px;}
-.panel .stat-line{font-size:14px;}
-.panel .log-list{margin-top:12px;max-height:400px;overflow:auto;}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;width:100%;max-width:500px;padding:18px;max-height:88vh;overflow:auto;}
+.panel h3{font-size:15px;margin-bottom:12px;}
+.panel .stat-line{font-size:13px;}
+.panel .log-list{margin-top:10px;max-height:300px;overflow:auto;}
 .panel .log-item{grid-template-columns:1fr auto auto;}
-.panel-actions{display:flex;gap:10px;margin-top:18px;}
-.panel-actions .grow{flex:1;}
-@media (max-width:768px){
+.panel-actions{display:flex;gap:8px;margin-top:14px;}
+.panel-actions button{flex:1;}
+.setting-item{margin:10px 0;display:flex;gap:10px;align-items:center;}
+.setting-item label{flex:1;font-size:13.5px;}
+.setting-item input[type="number"]{width:76px;padding:6px;border:1px solid var(--line);border-radius:6px;font-size:13px;outline:none;}
+.setting-item input[type="checkbox"]{width:18px;height:18px;accent-color:var(--green);}
+.setting-tip{font-size:12px;color:var(--dim);line-height:1.7;margin-top:6px;}
+#toast{
+  position:fixed;left:50%;bottom:34px;transform:translate(-50%,20px);
+  background:rgba(34,34,34,.92);color:#fff;padding:10px 18px;border-radius:10px;
+  font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:60;max-width:88vw;text-align:center;
+}
+#toast.show{opacity:1;transform:translate(-50%,0);}
+#storageWarn{
+  display:none;background:#fff3cd;color:#8a6d3b;border-bottom:1px solid #f0e0a0;
+  padding:8px 14px;font-size:12.5px;line-height:1.6;
+}
+@media (max-width:720px){
+  body{padding:8px;}
+  .focus-input-row{justify-content:flex-start;}
+  .focus-input-row input{min-width:0;flex:1 1 100%;}
+  .swipe-hint{display:block;}
+  .todo-add-row .todotxt{min-width:0;flex:1 1 100%;}
+  .todo-add-row input[type=number]{width:96px;}
+  #adjustContent{min-width:0;flex:1 1 100%;}
+  .backup-tip{min-width:0;}
+  .log-item{grid-template-columns:1fr auto;row-gap:4px;}
+  .log-item .log-dur{grid-column:2;text-align:right;}
   .info-grid{grid-template-columns:repeat(2,1fr);}
+  .info-cell:nth-child(2n){border-right:none;}
   .bottom{grid-template-columns:1fr;}
   .summary{grid-template-columns:repeat(2,1fr);}
-  .timer-show{margin-left:0;margin-top:8px;width:100%;justify-content:flex-end;}
-  .ctrl{align-items:flex-start;}
+  .circle-svg-container{width:196px;height:196px;}
+  .circle-time-text{font-size:27px;}
+  .timer-info-row{grid-template-columns:1fr;}
+  .brand{font-size:15.5px !important;}
+  th,td{font-size:12px;}
 }
+@media print{.top-bar,.circle-timer-wrap,.timer-buttons{display:none;}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="top-bar">
-    <div class="brand">2027 考研 · 急诊专硕</div>
+    <div class="brand">考研每日学习规划</div>
     <div class="tabs">
-      <button id="tabToday" class="active">今日看板</button>
-      <button id="tabDiary">每日日记</button>
-      <button id="tabHistory">历史总览</button>
+      <button id="tabToday" class="active" type="button">今日看板</button>
+      <button id="tabDiary" type="button">每日日记</button>
+      <button id="tabHistory" type="button">历史总览</button>
+      <button id="tabSetting" type="button">设置</button>
     </div>
   </div>
-  <!-- ========== 今日看板 ========== -->
+  <div id="storageWarn">当前浏览器不允许本地存储（可能开了无痕模式），关闭页面后数据会丢失。建议用普通窗口打开，或定期导出备份。</div>
+
+  <!-- ============ 今日看板 ============ -->
   <div class="view active" id="viewToday">
     <div class="info-grid">
-      <div class="info-cell hl"><span class="k">规划日期</span><span class="v" contenteditable="true" id="planDate">2026-11-08</span></div>
-      <div class="info-cell"><span class="k">星期</span><span class="v auto-dim" id="weekDay">周日</span></div>
+      <div class="info-cell hl"><span class="k">规划日期</span><span class="v editable" contenteditable="true" id="planDate" spellcheck="false">---</span></div>
+      <div class="info-cell"><span class="k">星期</span><span class="v" id="weekDay">--</span></div>
       <div class="info-cell"><span class="k">距初试剩余</span><span class="v hl-num" id="remainDays">--</span></div>
-      <div class="info-cell hl"><span class="k">考试日期</span><span class="v" contenteditable="true" id="examDate">2026-12-19</span></div>
-      <div class="info-cell"><span class="k">计划学习时长</span><span class="v" id="planHour">12.0 小时</span></div>
+      <div class="info-cell hl"><span class="k">考试日期</span><span class="v editable" contenteditable="true" id="examDate" spellcheck="false">----</span></div>
+      <div class="info-cell"><span class="k">计划学习时长</span><span class="v" id="planHour">0 小时</span></div>
       <div class="info-cell"><span class="k">今日完成度</span><span class="v" id="finishPct">0%</span></div>
     </div>
-    <div class="count-bar" id="countText">距离 2027 考研初试还剩 -- 天</div>
-    <div class="ctrl">
-      <label>当前科目</label>
-      <select id="subjectSel">
-        <option value="西综">西综</option>
-        <option value="英语">英语</option>
-        <option value="政治">政治</option>
-      </select>
-      <input class="content-input" id="curContent" placeholder="本次专注内容（如：西综·内科真题）">
-      <button class="btn-start" id="timerBtn">开始专注</button>
-      <button class="btn-ghost" id="endBtn" style="display:none">结束记录</button>
-      <button class="btn-ghost" id="resetFocus">重置本次</button>
-      <div class="timer-show" id="focusTime">00:00:00</div>
-      <div style="font-size:12px;color:#6b7280;width:100%;margin-top:4px;">💡iPad提示：切后台时数字会暂停跳动，切回页面自动补全真实时长</div>
+    <div class="count-bar" id="countText">距离初试还剩 -- 天</div>
+
+    <div class="circle-timer-wrap">
+      <div class="mode-row">
+        <label for="timerModeSel">计时模式</label>
+        <select id="timerModeSel">
+          <option value="stopwatch">正计时（记录实际学习）</option>
+          <option value="pomodoro">番茄倒计时</option>
+        </select>
+      </div>
+      <div class="circle-svg-container">
+        <svg class="circle-svg" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="circle-bg" cx="50" cy="50" r="42"></circle>
+          <circle class="circle-progress" id="circleProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
+        </svg>
+        <div class="circle-time-text" id="circleTime">00:00:00</div>
+        <div class="circle-status" id="circleStatus">未开始</div>
+      </div>
+      <div class="timer-info-row">
+        <div class="info-card"><div class="lab">当前任务</div><div class="val" id="infoCurTask">无</div></div>
+        <div class="info-card"><div class="lab">今日已完成</div><div class="val" id="infoDoneTime">0 分钟</div></div>
+        <div class="info-card"><div class="lab">今日计划</div><div class="val" id="infoTargetTime">0 分钟</div></div>
+      </div>
+      <div class="focus-input-row">
+        <label for="subjectSel">科目</label>
+        <select id="subjectSel">
+          <option value="西综">西综</option>
+          <option value="英语">英语</option>
+          <option value="政治">政治</option>
+        </select>
+        <input id="curContent" placeholder="本次专注内容，如：西综·内科真题" autocomplete="off">
+      </div>
+      <div class="timer-buttons">
+        <button class="btn-start" id="timerBtn" type="button">开始专注</button>
+        <button class="btn-ghost" id="endBtn" type="button" style="display:none">结束记录</button>
+        <button class="btn-ghost" id="resetFocus" type="button">放弃本次</button>
+      </div>
     </div>
+
+    <div class="todo-wrap">
+      <div class="box-title" style="margin:-14px -14px 10px;border-radius:14px 14px 0 0;">今日待办</div>
+      <div id="todoList"></div>
+      <div class="todo-add-row">
+        <select id="todoSubj">
+          <option value="西综">西综</option>
+          <option value="英语">英语</option>
+          <option value="政治">政治</option>
+        </select>
+        <input class="todotxt" id="todoText" placeholder="输入待办，例如：内科循环真题" autocomplete="off">
+        <input type="number" min="5" step="5" placeholder="预估分钟" id="todoEst">
+        <button class="btn-start" id="todoAddBtn" type="button">添加</button>
+      </div>
+    </div>
+
     <div class="table-scroll">
-      <table id="planTable">
+      <table class="plan-table">
         <thead>
           <tr>
-            <th style="width:3%"></th>
-            <th style="width:12%">时段</th>
-            <th style="width:18%">时间</th>
-            <th style="width:25%">内容安排</th>
-            <th style="width:12%">类别</th>
-            <th style="width:12%">计划时长(分钟)</th>
-            <th style="width:12%">有效时长(分钟)</th>
-            <th style="width:4%"></th>
+            <th style="width:34px"></th>
+            <th style="width:110px">时段</th>
+            <th style="width:170px">时间</th>
+            <th style="width:210px">内容安排</th>
+            <th style="width:80px">类别</th>
+            <th style="width:96px">计划(分钟)</th>
+            <th style="width:96px">已学(分钟)</th>
+            <th style="width:88px">操作</th>
           </tr>
         </thead>
         <tbody id="planBody"></tbody>
       </table>
     </div>
-    <button class="add-row" id="addRow">+ 新增时段</button>
+    <div class="swipe-hint">← 表格可左右滑动，查看完整列 →</div>
+    <button class="add-row" id="addRow" type="button">+ 新增时段</button>
+
     <div class="bottom">
       <div class="box">
         <div class="box-title">今日完成度</div>
         <div class="box-body">
-          <div class="stat-line"><span class="k">计划学习总时长</span><span class="v" id="planAllMin">720 分钟</span></div>
+          <div class="stat-line"><span class="k">计划学习总时长</span><span class="v" id="planAllMin">0 分钟</span></div>
           <div class="stat-line"><span class="k">已完成有效时长</span><span class="v" id="doneAllMin">0 分钟</span></div>
           <div class="stat-line"><span class="k">今日完成度</span><span class="v" id="rateText">0.0%</span></div>
-          <div class="stat-line"><span class="k">计划折合学时</span><span class="v" id="planHourText">12.0 小时</span></div>
+          <div class="stat-line"><span class="k">计划折合学时</span><span class="v" id="planHourText">0.0 小时</span></div>
           <div class="stat-line"><span class="k">实际折合学时</span><span class="v" id="realHour">0.0 小时</span></div>
+          <div class="stat-line"><span class="k">连续打卡</span><span class="v" id="streakShow">0 天</span></div>
+          <div class="stat-line"><button class="btn-warning" id="clearTodayBtn" type="button">清空今日计时记录（保留计划）</button></div>
         </div>
       </div>
       <div class="box">
-        <div class="box-title">各类任务时间占比</div>
+        <div class="box-title">各科时间分配</div>
         <div class="box-body">
-          <div class="table-scroll">
-            <table class="mini">
-              <thead><tr><th>类别</th><th>计划时长</th><th>计划占比</th><th>有效时长</th><th>完成度</th></tr></thead>
-              <tbody id="ratioBody"></tbody>
-            </table>
-          </div>
-          <div class="adjust-row" id="adjustRow">
+          <table class="mini">
+            <thead><tr><th>科目</th><th>计划</th><th>计划占比</th><th>已学</th><th>完成度</th></tr></thead>
+            <tbody id="ratioBody"></tbody>
+          </table>
+          <div class="adjust-row">
             <select id="adjustSubject">
               <option value="西综">西综</option>
               <option value="英语">英语</option>
               <option value="政治">政治</option>
             </select>
-            <input class="content-input" id="adjustContent" placeholder="补录内容（如：西综·内科真题）">
-            <input class="adjust-min" id="adjustMin" type="number" min="1" step="1" placeholder="分钟">
-            <button class="btn-start" id="adjustAdd">添加补录</button>
-            <div class="adjust-hint">忘开计时的学习可在这里补录：选科目、填内容和时长，计入下方统计，并出现在专注记录里，可删除。</div>
+            <input id="adjustContent" placeholder="补录内容（如：西综·内科真题）" autocomplete="off">
+            <input id="adjustMin" type="number" min="1" step="1" placeholder="分钟">
+            <button class="btn-start" id="adjustAdd" type="button">补录</button>
+            <div class="adjust-hint">忘了开计时的学习在这里补录：选科目、填内容、填分钟数，会计入统计并出现在下方记录里，可删除。</div>
           </div>
         </div>
       </div>
     </div>
+
     <div class="log-section">
-      <div class="box-title" style="border-radius:12px 12px 0 0;">专注时段记录</div>
+      <div class="box-title" style="border-radius:12px 12px 0 0;">专注记录</div>
       <div class="log-list" id="logList"></div>
     </div>
   </div>
-  <!-- ========== 每日日记 ========== -->
+
+  <!-- ============ 日记 ============ -->
   <div class="view" id="viewDiary">
     <div class="diary-wrap">
       <div class="diary-head">
-        <label>日期</label>
+        <label for="diaryDate">日期</label>
         <input type="date" id="diaryDate">
         <span class="saved" id="diarySaved"></span>
       </div>
-      <textarea class="diary-text" id="diaryText" placeholder="今天有什么想法、状态、心情，随便记几笔…"></textarea>
+      <textarea class="diary-text" id="diaryText" placeholder="今天的状态、想法、复盘，随便记几笔…"></textarea>
       <div class="diary-recent">
         <h4>历史日记</h4>
         <div id="diaryList"></div>
       </div>
     </div>
   </div>
-  <!-- ========== 历史总览 ========== -->
+
+  <!-- ============ 历史 ============ -->
   <div class="view" id="viewHistory">
     <div class="summary">
       <div class="sum-card"><div class="num" id="sumDays">0</div><div class="lbl">累计学习天数</div></div>
-      <div class="sum-card"><div class="num" id="sumHours">0</div><div class="lbl">累计学时(小时)</div></div>
-      <div class="sum-card"><div class="num" id="sumAvg">0</div><div class="lbl">日均学时(小时)</div></div>
+      <div class="sum-card"><div class="num" id="sumHours">0</div><div class="lbl">累计学时（小时）</div></div>
+      <div class="sum-card"><div class="num" id="sumAvg">0</div><div class="lbl">日均学时（小时）</div></div>
       <div class="sum-card"><div class="num" id="sumRate">0%</div><div class="lbl">平均完成度</div></div>
     </div>
     <div class="cal-wrap">
       <div class="cal-head">
-        <button id="prevMonth">‹ 上一月</button>
+        <button id="prevMonth" type="button">‹ 上一月</button>
         <div class="month" id="calMonth">--</div>
-        <button id="nextMonth">下一月 ›</button>
+        <button id="nextMonth" type="button">下一月 ›</button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
     </div>
     <div class="history-table">
-      <table>
-        <thead><tr><th>日期</th><th>星期</th><th>计划(分钟)</th><th>有效(分钟)</th><th>学时</th><th>完成度</th><th>记录条数</th></tr></thead>
-        <tbody id="historyBody"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>日期</th><th>星期</th><th>计划(分)</th><th>已学(分)</th><th>学时</th><th>完成度</th><th>记录数</th></tr></thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
     </div>
     <div class="backup-box">
       <div class="box-title">数据备份</div>
       <div class="box-body backup-actions">
-        <p class="backup-tip">❗iPad重要提醒：请**每周导出JSON备份**；添加到主屏幕网页App重装系统/卸载会清空本地存储！需要恢复时用「导入备份」选回该文件即可。</p>
-        <button class="btn-ghost" id="exportBtn">导出备份（下载 JSON）</button>
-        <button class="btn-ghost" id="importBtn">导入备份</button>
+        <p class="backup-tip">数据保存在本机。换电脑、重装系统前先导出一份 JSON；恢复时点「导入备份」选回该文件。桌面版还会每天在 data/daily 里自动留一份当天快照。</p>
+        <button class="btn-ghost" id="exportBtn" type="button">导出备份</button>
+        <button class="btn-ghost" id="importBtn" type="button">导入备份</button>
         <input type="file" id="importFile" accept="application/json,.json" hidden>
       </div>
     </div>
   </div>
+
+  <!-- ============ 设置 ============ -->
+  <div class="view" id="viewSetting">
+    <div class="panel" style="max-width:none;border:none;border-radius:0;max-height:none;">
+      <h3>设置（保存在本机）</h3>
+      <div class="setting-item">
+        <label for="settingSound">计时结束响提示音</label>
+        <input type="checkbox" id="settingSound">
+      </div>
+      <div class="setting-item">
+        <label for="settingNotify">计时结束发桌面通知（需浏览器授权）</label>
+        <input type="checkbox" id="settingNotify">
+      </div>
+      <div class="setting-item">
+        <label for="setPomFocus">番茄专注时长（分钟）</label>
+        <input type="number" id="setPomFocus" min="5" max="180" step="1">
+      </div>
+      <div class="setting-item">
+        <label for="setPomShort">短休息（分钟）</label>
+        <input type="number" id="setPomShort" min="1" max="60" step="1">
+      </div>
+      <div class="setting-item">
+        <label for="setPomLong">长休息（分钟）</label>
+        <input type="number" id="setPomLong" min="5" max="90" step="1">
+      </div>
+      <div class="setting-item">
+        <label for="setPomRound">每几轮进一次长休息</label>
+        <input type="number" id="setPomRound" min="2" max="10" step="1">
+      </div>
+      <div class="box" style="border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:14px 0;">
+        <div class="box-title">数据存储位置</div>
+        <div class="box-body">
+          <div class="dir-text" id="dataDirText">正在读取…</div>
+          <p class="backup-tip" style="min-width:0;margin-top:8px;">
+            每次改动自动写入 <code>data/data.json</code>；每天还会在 <code>data/daily/日期.json</code>
+            存一份当天快照；手动备份在 <code>data/backup/</code>。
+          </p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+            <button class="btn-ghost" id="openDataDirBtn" type="button">打开数据文件夹</button>
+            <button class="btn-ghost" id="backupNowBtn" type="button">立即备份</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-actions">
+        <button class="btn-start" id="saveSettingBtn" type="button">保存设置</button>
+      </div>
+      <div class="setting-tip">改番茄参数后，下一轮番茄生效；正在计时的那一轮不受影响。</div>
+    </div>
+  </div>
 </div>
+
 <!-- 明细弹窗 -->
 <div class="mask" id="mask">
   <div class="panel">
     <h3 id="detailTitle">当日明细</h3>
     <div class="stat-line"><span class="k">计划时长</span><span class="v" id="detailPlan">0 分钟</span></div>
-    <div class="stat-line"><span class="k">有效时长</span><span class="v" id="detailEff">0 分钟</span></div>
+    <div class="stat-line"><span class="k">已学时长</span><span class="v" id="detailEff">0 分钟</span></div>
     <div class="stat-line"><span class="k">完成度</span><span class="v" id="detailRate">0%</span></div>
     <div class="log-list" id="detailLogs"></div>
     <div class="panel-actions">
-      <button class="btn-ghost grow" id="closeDetail">关闭</button>
+      <button class="btn-start" id="gotoDay" type="button">跳到这一天</button>
+      <button class="btn-ghost" id="closeDetail" type="button">关闭</button>
     </div>
   </div>
 </div>
+
+<div id="toast"></div>
+<noscript><div style="padding:20px;text-align:center;">这个页面需要开启 JavaScript 才能使用。</div></noscript>
+
 <script>
-/* ================= 存储 ================= */
-const DB_KEY = "study_plan_db_v3";
+"use strict";
+
+/* ---------- Tauri 原生桥接（浏览器里打开时为 null） ---------- */
+const NATIVE_API = (window.__TAURI__ && window.__TAURI__.core) ? window.__TAURI__.core : null;
+const NATIVE = !!NATIVE_API;
+let RAW_DB = null;
+
+/* =======================================================
+   1. 常量 & 基础工具
+   ======================================================= */
+const DB_KEY = "study_plan_db_v5";
 const SUBJECTS = ["西综","英语","政治"];
 const CATS = ["西综","英语","政治","休息"];
 const WEEK_CN = ["周日","周一","周二","周三","周四","周五","周六"];
-const defaultRows = [
-  {slot:"起床 + 早餐", time:"6:40-7:30", content:"", cat:"休息", plan:0},
-  {slot:"上午①", time:"07:40-09:30", content:"", cat:"西综", plan:110},
-  {slot:"上午②", time:"09:45-11:15", content:"", cat:"英语", plan:90},
-  {slot:"吃饭+休息", time:"11:25-12:40", content:"", cat:"休息", plan:0},
-  {slot:"下午①", time:"12:40-13:50", content:"", cat:"政治", plan:70},
-  {slot:"下午2", time:"14:00-15:30", content:"", cat:"西综", plan:90},
-  {slot:"下午3", time:"15:45-17:15", content:"", cat:"英语", plan:90},
-  {slot:"吃饭+洗澡", time:"17:15-19:00", content:"", cat:"休息", plan:0},
-  {slot:"晚间①", time:"19:00-20:30", content:"", cat:"政治", plan:90},
-  {slot:"晚间②", time:"20:45-22:00", content:"", cat:"西综", plan:75},
-  {slot:"晚间3", time:"22:15-23:15", content:"", cat:"英语", plan:60},
-  {slot:"休息", time:"23:15-00:00", content:"", cat:"休息", plan:45}
+const RADIUS = 42;
+
+const DEFAULT_ROWS = [
+  {slot:"起床+早餐", time:"06:40-07:30", content:"", cat:"休息", plan:0},
+  {slot:"上午①",   time:"07:40-09:30", content:"", cat:"西综", plan:110},
+  {slot:"上午②",   time:"09:45-11:15", content:"", cat:"英语", plan:90},
+  {slot:"午餐+休息",time:"11:25-12:40", content:"", cat:"休息", plan:0},
+  {slot:"下午①",   time:"12:40-13:50", content:"", cat:"政治", plan:70},
+  {slot:"下午②",   time:"14:00-15:30", content:"", cat:"西综", plan:90},
+  {slot:"下午③",   time:"15:45-17:15", content:"", cat:"英语", plan:90},
+  {slot:"晚餐+洗澡",time:"17:15-19:00", content:"", cat:"休息", plan:0},
+  {slot:"晚间①",   time:"19:00-20:30", content:"", cat:"政治", plan:90},
+  {slot:"晚间②",   time:"20:45-22:00", content:"", cat:"西综", plan:75},
+  {slot:"晚间③",   time:"22:15-23:15", content:"", cat:"英语", plan:60},
+  {slot:"睡前",     time:"23:15-00:00", content:"", cat:"休息", plan:0}
 ];
+
+const DEFAULT_SETTINGS = {sound:true, notify:false, pomFocus:25, pomShort:5, pomLong:15, pomRound:4};
+
+const $ = s => document.querySelector(s);
+
+function pad(n){ return String(n).padStart(2,"0"); }
+function num(v){ const n = parseFloat(v); return Number.isFinite(n) ? n : 0; }
+function clamp(n,a,b){ n = num(n); return Math.min(b, Math.max(a, n)); }
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+
 function todayKey(){
-  const d=new Date();
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-}
-function pad(n){return String(n).padStart(2,"0");}
-let db = loadDB();
-function loadDB(){
-  try{
-    let raw = null;
-    if(window.api && window.api.readDB) raw = window.api.readDB();
-    else raw = localStorage.getItem(DB_KEY);
-    if(raw) return JSON.parse(raw);
-  }catch(e){}
-  return { meta:{ examDate:"2026-12-19", title:"每日学习规划｜2027 考研 · 急诊专硕" }, days:{} };
-}
-function saveDB(){
-  const str = JSON.stringify(db);
-  if(window.api && window.api.writeDB) window.api.writeDB(str);
-  else localStorage.setItem(DB_KEY, str);
-}
-// 节流写盘：计时过程中不必每秒落盘
-let saveTimer=null;
-function scheduleSave(){
-  if(saveTimer) return;
-  saveTimer=setTimeout(()=>{ saveTimer=null; saveDB(); }, 3000);
-}
-let activeDate = todayKey();
-function getDay(key){
-  if(!db.days[key]){
-    db.days[key] = {
-      planDate: key,
-      examDate: db.meta.examDate,
-      rows: JSON.parse(JSON.stringify(defaultRows)),
-      eff: {"西综":0,"英语":0,"政治":0},
-      logs: [], curSubject:"西综", curContent:"", timerState:"idle", diary:""
-    };
-  }
-  // 兼容旧数据：类别归一、补手动有效时长字段
-  db.days[key].rows.forEach(r=>{
-    if(!CATS.includes(r.cat)) r.cat = r.cat==="休息"?"休息":"西综";
-    r.manualEff = Number(r.manualEff)||0;
-  });
-  return db.days[key];
-}
-const $ = s=>document.querySelector(s);
-let state = getDay(activeDate);
-/* ================= 工具 ================= */
-function fmtHMS(sec){
-  const h=String(Math.floor(sec/3600)).padStart(2,"0");
-  const m=String(Math.floor((sec%3600)/60)).padStart(2,"0");
-  const s=String(sec%60).padStart(2,"0");
-  return `${h}:${m}:${s}`;
+  const d = new Date();
+  return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
 }
 function nowStr(){
-  const d=new Date();
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const d = new Date();
+  return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate())
+       + " " + pad(d.getHours()) + ":" + pad(d.getMinutes());
 }
 function parseDate(s){
-  const [y,m,d]=s.split("-").map(Number);
-  return new Date(y, m-1, d);
+  const p = String(s||"").trim().split("-");
+  if(p.length !== 3) return null;
+  const y = Number(p[0]), m = Number(p[1]), d = Number(p[2]);
+  if(!y || !m || !d) return null;
+  const dt = new Date(y, m-1, d);
+  if(dt.getFullYear() !== y || dt.getMonth() !== m-1 || dt.getDate() !== d) return null;
+  return dt;
 }
-function weekOf(s){
-  const d=parseDate(s);
-  if(isNaN(d)) return "";
-  return WEEK_CN[d.getDay()];
+function normDate(s){
+  const p = String(s||"").trim().match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if(!p) return null;
+  const dt = parseDate(p[1] + "-" + pad(p[2]) + "-" + pad(p[3]));
+  if(!dt) return null;
+  return dt.getFullYear() + "-" + pad(dt.getMonth()+1) + "-" + pad(dt.getDate());
 }
-function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
-/* ================= 自动计算 ================= */
-function autoCalc(){
-  $("#weekDay").textContent = weekOf(state.planDate);
-  const exam = new Date(state.examDate + "T00:00:00");
-  const now = new Date();
-  const diff = exam - now;
-  const days = diff > 0 ? Math.ceil(diff/86400000) : 0;
-  const week = (days/7).toFixed(1);
+function weekOf(s){ const d = parseDate(s); return d ? WEEK_CN[d.getDay()] : ""; }
+function fmtHMS(sec){
+  sec = Math.max(0, Math.floor(sec));
+  return pad(Math.floor(sec/3600)) + ":" + pad(Math.floor(sec%3600/60)) + ":" + pad(sec%60);
+}
+function fmtMMSS(sec){
+  sec = Math.max(0, Math.floor(sec));
+  return pad(Math.floor(sec/60)) + ":" + pad(sec%60);
+}
+function esc(s){
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function fmtMin(min){
+  min = Math.max(0, Math.round(min));
+  if(min < 60) return min + " 分钟";
+  return (min/60).toFixed(1) + " 小时（" + min + " 分钟）";
+}
+
+let toastTimer = null;
+function toast(msg){
+  const el = $("#toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove("show"), 2200);
+}
+
+/* =======================================================
+   2. 声音 & 通知
+   ======================================================= */
+let audioCtx = null;
+function ensureAudio(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === "suspended") audioCtx.resume();
+  }catch(e){ audioCtx = null; }
+}
+function beep(freq, at, dur){
+  if(!audioCtx) return;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.connect(g); g.connect(audioCtx.destination);
+  o.type = "sine";
+  o.frequency.value = freq;
+  g.gain.setValueAtTime(0, audioCtx.currentTime + at);
+  g.gain.linearRampToValueAtTime(0.16, audioCtx.currentTime + at + 0.05);
+  g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + at + dur);
+  o.start(audioCtx.currentTime + at);
+  o.stop(audioCtx.currentTime + at + dur + 0.02);
+}
+function playChime(){
+  if(!settings.sound) return;
+  ensureAudio();
+  if(!audioCtx) return;
+  try{ beep(880, 0, 0.28); beep(1180, 0.34, 0.34); }catch(e){}
+}
+function notify(title, body){
+  if(!settings.notify) return;
+  if(!("Notification" in window)) return;
+  if(Notification.permission !== "granted") return;
+  try{ new Notification(title, {body:body}); }catch(e){}
+}
+
+/* =======================================================
+   3. 存储层
+   ======================================================= */
+let storageOK = true;
+
+function defaultDB(){
+  return {
+    meta:{ examDate:"2026-12-19", settings:clone(DEFAULT_SETTINGS), mode:"stopwatch", timer:null },
+    days:{},
+    todos:{}
+  };
+}
+
+function normalizeSettings(s){
+  const o = Object.assign({}, DEFAULT_SETTINGS, s || {});
+  o.sound = !!o.sound;
+  o.notify = !!o.notify;
+  o.pomFocus = Math.round(clamp(o.pomFocus, 5, 180)) || 25;
+  o.pomShort = Math.round(clamp(o.pomShort, 1, 60)) || 5;
+  o.pomLong  = Math.round(clamp(o.pomLong, 5, 90)) || 15;
+  o.pomRound = Math.round(clamp(o.pomRound, 2, 10)) || 4;
+  return o;
+}
+
+function loadDB(){
+  let db = null;
+  let raw = RAW_DB;
+
+  if(raw == null){
+    try{
+      raw = localStorage.getItem(DB_KEY);
+    }catch(e){
+      raw = null;
+      if(!NATIVE) storageOK = false;
+    }
+  }
+  try{
+    db = raw ? JSON.parse(raw) : null;
+  }catch(e){
+    db = null;
+    if(!NATIVE) storageOK = false;
+  }
+  if(!db || typeof db !== "object") db = defaultDB();
+  if(!db.meta || typeof db.meta !== "object") db.meta = defaultDB().meta;
+  if(!db.days || typeof db.days !== "object") db.days = {};
+  if(!db.todos || typeof db.todos !== "object") db.todos = {};
+  if(!normDate(db.meta.examDate)) db.meta.examDate = "2026-12-19";
+  db.meta.settings = normalizeSettings(db.meta.settings);
+  if(db.meta.mode !== "pomodoro") db.meta.mode = "stopwatch";
+  return db;
+}
+
+let db = loadDB();
+let settings = db.meta.settings;
+
+function saveDB(){
+  try{
+    // 计时中的状态做一次快照，刷新页面后可恢复
+    if(timer.status !== "idle"){
+      db.meta.timer = {
+        mode: timer.mode,
+        status: timer.status,
+        dayKey: timer.dayKey,
+        logId: timer.logId,
+        subject: timer.subject,
+        content: timer.content,
+        elapsed: curElapsed(),
+        startMs: timer.status === "running" ? Date.now() : null,
+        phase: timer.phase,
+        phaseTotal: timer.phaseTotal,
+        round: timer.round
+      };
+    }else{
+      db.meta.timer = null;
+    }
+    const json = JSON.stringify(db);
+    if(NATIVE){
+      NATIVE_API.invoke("db_save", { json: json, day: todayKey() }).catch(err => {
+        storageOK = false;
+        $("#storageWarn").style.display = "block";
+        console.error("保存到 data 失败", err);
+      });
+    }else{
+      localStorage.setItem(DB_KEY, json);
+    }
+    storageOK = true;
+  }catch(e){
+    storageOK = false;
+    $("#storageWarn").style.display = "block";
+  }
+}
+
+let saveTimer = null;
+function saveSoon(){
+  if(saveTimer) return;
+  saveTimer = setTimeout(()=>{ saveTimer = null; saveDB(); }, NATIVE ? 600 : 1200);
+}
+
+/* =======================================================
+   4. 每日数据
+   ======================================================= */
+function getDay(key){
+  let d = db.days[key];
+  if(!d || typeof d !== "object") d = db.days[key] = {};
+
+  if(!Array.isArray(d.rows) || d.rows.length === 0) d.rows = clone(DEFAULT_ROWS);
+  d.rows.forEach(r => {
+    r.slot = r.slot == null ? "" : String(r.slot);
+    r.time = r.time == null ? "" : String(r.time);
+    r.content = r.content == null ? "" : String(r.content);
+    if(CATS.indexOf(r.cat) < 0) r.cat = "西综";
+    r.plan = Math.max(0, Math.round(num(r.plan)));
+  });
+
+  if(!Array.isArray(d.logs)) d.logs = [];
+  d.logs.forEach(l => {
+    if(!l.id) l.id = uid();
+    if(SUBJECTS.indexOf(l.subject) < 0) l.subject = "西综";
+    l.sec = Math.max(0, Math.round(num(l.sec)));
+    if(l.content == null) l.content = "";
+    if(l.start == null) l.start = "";
+    if(l.end === undefined) l.end = null;
+  });
+
+  if(typeof d.diary !== "string") d.diary = "";
+  d.planDate = key;
+
+  recalcEff(d);
+  return d;
+}
+
+/* 有效时长完全由记录派生，避免重复累加/删除后对不上 */
+function recalcEff(day){
+  const eff = {"西综":0, "英语":0, "政治":0};
+  const liveId = timer.status !== "idle" ? timer.logId : null;
+
+  day.logs.forEach(l => {
+    if(l.id === liveId) return;   // 进行中那条不读旧值，改用实时计算
+    if(SUBJECTS.indexOf(l.subject) >= 0) eff[l.subject] += Math.max(0, num(l.sec));
+  });
+
+  // 正在计时的那一段，用真实时间现算加进来（不落盘）
+  if(liveId && timer.dayKey === day.planDate && SUBJECTS.indexOf(timer.subject) >= 0){
+    eff[timer.subject] += sessionSec();
+  }
+  day.eff = eff;
+}
+
+function getTodos(key){
+  let list = db.todos[key];
+  if(!Array.isArray(list)){ list = db.todos[key] = []; }
+  list.forEach(t => {
+    if(!t.id) t.id = uid();
+    if(SUBJECTS.indexOf(t.subj) < 0) t.subj = "西综";
+    t.text = t.text == null ? "" : String(t.text);
+    t.est = Math.max(0, Math.round(num(t.est)));
+    t.done = !!t.done;
+  });
+  return list;
+}
+
+function planMinTotal(day){
+  if(!day || !Array.isArray(day.rows)) return 0;
+  let p = 0;
+  day.rows.forEach(r => { if(SUBJECTS.indexOf(r.cat) >= 0) p += num(r.plan); });
+  return Math.round(p);
+}
+function subjectPlanMin(day, subj){
+  if(!day || !Array.isArray(day.rows)) return 0;
+  return Math.round(day.rows.filter(r => r.cat === subj).reduce((a, r) => a + num(r.plan), 0));
+}
+function effSecTotal(day){
+  if(!day || !day.eff) return 0;
+  return SUBJECTS.reduce((a, s) => a + num(day.eff[s]), 0);
+}
+function effMinTotal(day){
+  return Math.floor(effSecTotal(day) / 60);
+}
+function rateOf(day){
+  const plan = planMinTotal(day);
+  return plan > 0 ? Math.min(1, effMinTotal(day) / plan) : 0;
+}
+
+/* 计时器：只存「开始时间戳」和「已冻结的秒数」。
+   真实时长永远用 Date.now() - startMs 现算，setInterval 只负责刷新画面。 */
+const timer = {
+  mode: "stopwatch",     // stopwatch | pomodoro
+  status: "idle",        // idle | running | paused
+  dayKey: null,
+  logId: null,
+  subject: "西综",
+  content: "",
+  elapsed: 0,            // 暂停时冻结下来的秒数（不是每秒累加出来的）
+  startMs: null,         // 本次运行的开始时间戳（ms）
+  phase: "focus",        // pomodoro: focus | short | long
+  phaseTotal: 0,         // pomodoro: 当前阶段总秒
+  round: 0,              // 已完成番茄数
+  tickId: null,
+  tickCount: 0
+};
+
+let activeDate = todayKey();
+let state = getDay(activeDate);
+
+/* =======================================================
+   5. 计时引擎（核心重写）
+   ======================================================= */
+function curElapsed(){
+  if(timer.status === "running" && timer.startMs){
+    // 负值保护：系统时间被往回改时不让时长倒扣
+    const passed = Math.floor((Date.now() - timer.startMs) / 1000);
+    return timer.elapsed + Math.max(0, passed);
+  }
+  return timer.elapsed;
+}
+
+/* 这一段算进统计的秒数：番茄只算专注阶段，且不超过本阶段时长 */
+function sessionSec(){
+  const raw = Math.max(0, Math.round(curElapsed()));
+  if(timer.mode === "pomodoro"){
+    if(timer.phase !== "focus") return 0;
+    if(timer.phaseTotal > 0) return Math.min(raw, timer.phaseTotal);
+  }
+  return raw;
+}
+
+function findLog(){
+  if(!timer.logId) return {day:null, log:null};
+  const day = db.days[timer.dayKey];
+  if(!day) return {day:null, log:null};
+  const log = day.logs.find(l => l.id === timer.logId) || null;
+  return {day, log};
+}
+
+function createRunningLog(){
+  const day = getDay(timer.dayKey);
+  const log = {
+    id: uid(),
+    subject: timer.subject,
+    content: timer.content,
+    start: nowStr(),
+    end: null,
+    sec: 0,
+    manual: false
+  };
+  day.logs.push(log);
+  timer.logId = log.id;
+  recalcEff(day);
+  return log;
+}
+
+function stopTick(){
+  if(timer.tickId){ clearInterval(timer.tickId); timer.tickId = null; }
+}
+function startTick(){
+  stopTick();
+  timer.tickId = setInterval(tick, 1000);
+}
+
+/* 每秒只做三件事：按真实时间重算 → 刷新画面 → 顺带判断番茄是否到点。
+   这里绝不累加秒数，也绝不写记录。 */
+function tick(){
+  if(timer.status !== "running") return;
+
+  recalcEff(state);
+
+  if(timer.mode === "pomodoro"){
+    const remain = timer.phaseTotal - curElapsed();
+    if(remain <= 0){ completePhase(); return; }
+  }
+
+  renderTimer();
+  updateLiveNumbers();
+
+  // 每 30 秒落一次盘，只用于崩溃后恢复，不参与计时
+  if(++timer.tickCount % 30 === 0) saveDB();
+}
+
+/* 从后台切回来、窗口重新获得焦点时，立刻按真实时间刷新一次 */
+function hardRefreshTimer(){
+  if(timer.status !== "running"){ renderTimer(); return; }
+  recalcEff(state);
+  renderTimer();
+  updateLiveNumbers();
+  if(timer.mode === "pomodoro" && timer.phaseTotal - curElapsed() <= 0) completePhase();
+}
+document.addEventListener("visibilitychange", () => { if(!document.hidden) hardRefreshTimer(); });
+window.addEventListener("focus", hardRefreshTimer);
+
+function completePhase(){
+  stopTick();
+
+  if(timer.mode !== "pomodoro"){ renderTimer(); return; }
+
+  const {day, log} = findLog();
+
+  if(timer.phase === "focus"){
+    // 收尾这一颗番茄
+    if(log && day){
+      log.sec = timer.phaseTotal;
+      log.end = nowStr();
+      recalcEff(day);
+    }
+    timer.logId = null;
+    timer.round += 1;
+
+    const needLong = timer.round % Math.max(1, settings.pomRound) === 0;
+    timer.phase = needLong ? "long" : "short";
+    timer.phaseTotal = (needLong ? settings.pomLong : settings.pomShort) * 60;
+
+    playChime();
+    notify(needLong ? "🍅 一轮番茄完成" : "🍅 番茄完成", needLong ? "进入长休息" : "进入短休息");
+    toast(needLong ? "番茄完成，进入长休息" : "番茄完成，进入短休息");
+  }else{
+    // 休息结束，自动开始下一颗番茄
+    timer.phase = "focus";
+    timer.phaseTotal = settings.pomFocus * 60;
+    timer.elapsed = 0;
+    timer.startMs = Date.now();
+    createRunningLog();
+    playChime();
+    notify("⏰ 休息结束", "开始新一轮专注");
+    toast("休息结束，开始专注");
+  }
+
+  if(timer.phase !== "focus"){
+    timer.elapsed = 0;
+    timer.startMs = Date.now();
+  }
+  timer.status = "running";
+  startTick();
+  renderTimer();
+  updateLiveNumbers();
+  refreshLogs();
+  saveDB();
+}
+
+function startTimer(){
+  if(timer.status === "running") return;
+  ensureAudio();
+
+  if(timer.status === "paused"){
+    timer.status = "running";
+    timer.startMs = Date.now();
+    startTick();
+    renderTimer();
+    saveSoon();
+    return;
+  }
+
+  // idle → 新开一段
+  timer.dayKey = activeDate;
+  timer.subject = $("#subjectSel").value;
+  timer.content = $("#curContent").value.trim();
+  timer.elapsed = 0;
+
+  if(timer.mode === "pomodoro"){
+    if(timer.phase !== "focus"){
+      timer.phase = "focus";
+   }
+    timer.phaseTotal = settings.pomFocus * 60;
+    // 若上一段专注还没结束（异常），先收尾
+  }else{
+    timer.phase = "focus";
+    timer.phaseTotal = 0;
+  }
+
+  createRunningLog();
+  timer.status = "running";
+  timer.startMs = Date.now();
+  startTick();
+
+  renderTimer();
+  refreshLogs();
+  refreshStats();
+  saveDB();
+}
+
+function pauseTimer(){
+  if(timer.status !== "running") return;
+  // 暂停瞬间把时长冻结成数字，之后不再随时间增长
+  timer.elapsed = curElapsed();
+  timer.startMs = null;
+  timer.status = "paused";
+  stopTick();
+  recalcEff(state);
+  renderTimer();
+  updateLiveNumbers();
+  refreshLogs();
+  saveDB();
+}
+
+/* 结束并保存这一段 */
+function endTimer(silent){
+  if(timer.status === "running") timer.elapsed = curElapsed();
+
+  const {day, log} = findLog();
+  if(log && day){
+    if(timer.mode === "pomodoro" && timer.phase !== "focus"){
+      log.sec = 0;
+    }else{
+      log.sec = timer.mode === "pomodoro"
+        ? Math.min(timer.elapsed, timer.phaseTotal)
+        : timer.elapsed;
+    }
+    log.end = nowStr();
+    recalcEff(day);
+  }
+  const finished = timer.elapsed;
+
+  stopTick();
+  timer.status = "idle";
+  timer.startMs = null;
+  timer.elapsed = 0;
+  timer.logId = null;
+  timer.phase = "focus";
+  timer.phaseTotal = settings.pomFocus * 60;
+
+  renderTimer();
+  refreshLogs();
+  refreshStats();
+  saveDB();
+
+  if(!silent && finished > 0){
+    playChime();
+    toast("已保存本次专注 " + Math.max(1, Math.round(finished/60)) + " 分钟");
+  }
+}
+
+/* 放弃：删掉这段记录，不计入统计 */
+function cancelTimer(){
+  if(timer.status === "idle"){
+    toast("当前没有进行中的计时");
+    return;
+  }
+  const {day, log} = findLog();
+  if(log && day){
+    const i = day.logs.indexOf(log);
+    if(i >= 0) day.logs.splice(i, 1);
+    recalcEff(day);
+  }
+  stopTick();
+  timer.status = "idle";
+  timer.startMs = null;
+  timer.elapsed = 0;
+  timer.logId = null;
+  timer.phase = "focus";
+  timer.phaseTotal = settings.pomFocus * 60;
+  renderTimer();
+  refreshLogs();
+  refreshStats();
+  saveDB();
+  toast("已放弃，本次不计入统计");
+}
+
+function restoreTimer(){
+  const t = db.meta.timer;
+  timer.mode = db.meta.mode;
+  timer.phase = "focus";
+  timer.phaseTotal = settings.pomFocus * 60;
+  if(!t) return;
+
+  timer.mode = t.mode === "pomodoro" ? "pomodoro" : "stopwatch";
+  timer.phase = (t.phase === "short" || t.phase === "long") ? t.phase : "focus";
+  timer.phaseTotal = Math.max(1, Math.round(num(t.phaseTotal)) || settings.pomFocus*60);
+  timer.round = Math.max(0, Math.round(num(t.round)));
+  timer.subject = SUBJECTS.indexOf(t.subject) >= 0 ? t.subject : "西综";
+  timer.content = t.content || "";
+  timer.dayKey = db.days[t.dayKey] ? t.dayKey : activeDate;
+
+  if(t.status === "running"){
+    // 页面关掉期间的空白时间不能白算，统一恢复成"暂停"状态
+    const gap = t.startMs ? Math.max(0, Math.floor((Date.now() - num(t.startMs))/1000)) : 0;
+    timer.elapsed = Math.min(num(t.elapsed) + Math.min(gap, 120), timer.phaseTotal || 12*3600);
+    timer.status = "paused";
+    timer.startMs = null;
+    timer.logId = t.logId || null;
+    recalcEff(state);
+    toast("已恢复上次未结束的计时（已暂停），点「继续」接着记");
+  }else if(t.status === "paused"){
+    timer.elapsed = num(t.elapsed);
+    timer.status = "paused";
+    timer.startMs = null;
+    timer.logId = t.logId || null;
+    recalcEff(state);
+  }else{
+    timer.status = "idle";
+  }
+  $("#timerModeSel").value = timer.mode;
+}
+
+/* =======================================================
+   6. 界面渲染
+   ======================================================= */
+function renderTimer(){
+  const el = $("#circleTime");
+  const statusEl = $("#circleStatus");
+  const btn = $("#timerBtn");
+  const endBtn = $("#endBtn");
+  const ring = $("#circleProgress");
+
+  let main, sub, ringPercent, ringColor;
+
+  if(timer.mode === "pomodoro"){
+    const total = timer.phaseTotal || settings.pomFocus * 60;
+    const remain = Math.max(0, total - curElapsed());
+    main = fmtMMSS(remain);
+    ringPercent = Math.min(100, (curElapsed() / total) * 100);
+
+    if(timer.phase === "focus"){
+      sub = "专注中 · 第 " + (timer.round + 1) + " 颗" + (timer.status === "paused" ? "（已暂停）" : "");
+      ringColor = "var(--green)";
+    }else{
+      sub = (timer.phase === "long" ? "长休息" : "短休息") + (timer.status === "paused" ? "（已暂停）" : "");
+      ringColor = "var(--gold)";
+    }
+    if(timer.status === "idle"){
+      sub = "番茄钟待开始 · 专注 " + settings.pomFocus + " 分钟";
+      ringPercent = 0;
+      ringColor = "var(--green)";
+    }
+  }else{
+    const sec = curElapsed();
+    main = fmtHMS(sec);
+    ringPercent = rateOf(state) * 100;
+    ringColor = "var(--green)";
+    sub = timer.status === "running" ? "专注中" : timer.status === "paused" ? "已暂停" : "未开始";
+    if(timer.status !== "idle") sub += " · " + Math.max(1, Math.round(sec/60)) + " 分钟";
+  }
+
+  el.textContent = main;
+  statusEl.textContent = sub;
+  ring.style.stroke = ringColor;
+  const circumference = 2 * Math.PI * RADIUS;
+  ring.style.strokeDasharray = circumference;
+  ring.style.strokeDashoffset = circumference * (1 - Math.min(1, ringPercent/100));
+
+  const resetBtn = $("#resetFocus");
+  if(timer.status === "running"){
+    btn.textContent = "暂停";
+    endBtn.style.display = "inline-block";
+    resetBtn.style.display = "inline-block";
+  }else if(timer.status === "paused"){
+    btn.textContent = "继续";
+    endBtn.style.display = "inline-block";
+    resetBtn.style.display = "inline-block";
+  }else{
+    btn.textContent = "开始专注";
+    endBtn.style.display = "none";
+    resetBtn.style.display = "none";
+  }
+
+  const {log} = findLog();
+  if(log && log.content){
+    $("#infoCurTask").textContent = log.subject + "｜" + log.content;
+  }else if(timer.status !== "idle" && timer.content){
+    $("#infoCurTask").textContent = timer.subject + "｜" + timer.content;
+  }else if(timer.mode === "pomodoro" && timer.phase !== "focus"){
+    $("#infoCurTask").textContent = timer.phase === "long" ? "长休息" : "短休息";
+  }else{
+    $("#infoCurTask").textContent = "无";
+  }
+
+  document.title = timer.status === "idle"
+    ? "考研每日学习规划"
+    : (timer.mode === "pomodoro" ? "🍅 " : "⏱ ") + main + " · 考研专注";
+}
+
+function renderHeader(){
+  const pd = $("#planDate"), ed = $("#examDate");
+  if(document.activeElement !== pd) pd.textContent = activeDate;
+  if(document.activeElement !== ed) ed.textContent = db.meta.examDate;
+  $("#weekDay").textContent = weekOf(activeDate);
+
+  const exam = parseDate(db.meta.examDate);
+  let days = 0, weeks = "0.0";
+  if(exam){
+    const t = new Date();
+    t.setHours(0,0,0,0);
+    days = Math.max(0, Math.round((exam - t) / 86400000));
+    weeks = (days/7).toFixed(1);
+  }
   $("#remainDays").textContent = days;
-  $("#countText").textContent = `距离 2027 考研初试还剩 ${days} 天 · 折合 ${week} 周`;
+  $("#countText").textContent = days > 0
+    ? "距离初试还剩 " + days + " 天 · 折合 " + weeks + " 周"
+    : "已到考试日期，稳住";
+
+  const planMin = planMinTotal(state);
+  $("#planHour").textContent = (planMin/60).toFixed(1) + " 小时";
+  $("#finishPct").textContent = Math.round(rateOf(state)*100) + "%";
 }
-/* ================= 表格 ================= */
-function effMinForRow(i){
-  const cat = state.rows[i].cat;
-  if(!SUBJECTS.includes(cat)) return 0;
-  return Math.floor((state.eff[cat]||0)/60);
+
+/* 每行"已学"按该科目时间对计划量的比例分摊，避免每行都显示整科总数 */
+function rowEffMin(day, row){
+  if(SUBJECTS.indexOf(row.cat) < 0) return 0;
+  const subjPlan = subjectPlanMin(day, row.cat);
+  const subjEff = num(day.eff[row.cat]) / 60;
+  if(subjPlan <= 0) return Math.round(subjEff);
+  return Math.round(num(row.plan) / subjPlan * subjEff);
 }
-function splitTime(t){
-  const m=String(t||"").match(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
-  return m?[m[1],m[2]]:["",""];
-}
-let dragIndex=null;
+
+let dragIndex = null;
+
 function renderRows(){
   const body = $("#planBody");
   body.innerHTML = "";
-  state.rows.forEach((r,i)=>{
+  const frag = document.createDocumentFragment();
+
+  state.rows.forEach((r, i) => {
     const tr = document.createElement("tr");
-    if(r.cat === "休息") tr.classList.add("rest");
-    const opts = CATS.map(c=>`<option value="${c}" ${c===r.cat?"selected":""}>${c}</option>`).join("");
-    const [st,et]=splitTime(r.time);
-    tr.innerHTML = `
-      <td class="drag-handle" draggable="true" title="拖动排序">⠿</td>
-      <td contenteditable="true" data-i="${i}" data-k="slot">${esc(r.slot)}</td>
-      <td class="time-cell">
-        <input type="time" class="t-start" data-i="${i}" value="${st}">
-        <span class="time-sep">-</span>
-        <input type="time" class="t-end" data-i="${i}" value="${et}">
-      </td>
-      <td contenteditable="true" class="plan" data-i="${i}" data-k="content">${esc(r.content)}</td>
-      <td><select data-i="${i}" data-k="cat">${opts}</select></td>
-      <td contenteditable="true" class="num" data-i="${i}" data-k="plan">${r.plan}</td>
-      <td contenteditable="true" class="num" data-i="${i}" data-k="manualEff">${r.manualEff>0?r.manualEff:effMinForRow(i)}</td>
-      <td><button class="row-del" title="删除">×</button></td>`;
-    body.appendChild(tr);
+    if(r.cat === "休息") tr.className = "rest";
+
+    const opts = CATS.map(c =>
+      '<option value="' + c + '"' + (c === r.cat ? " selected" : "") + ">" + c + "</option>"
+    ).join("");
+
+    const tm = String(r.time).match(/(\d{1,2}:\d{2})\s*[-–]\s*(\d{1,2}:\d{2})/);
+    const st = tm ? tm[1] : "", et = tm ? tm[2] : "";
+
+    tr.innerHTML =
+      '<td class="drag-handle" draggable="true" title="按住上下拖动可排序">⠿</td>' +
+      '<td contenteditable="true" data-i="' + i + '" data-k="slot">' + esc(r.slot) + '</td>' +
+      '<td class="time-cell">' +
+        '<input type="time" class="t-start" data-i="' + i + '" value="' + st + '">' +
+        '<span class="time-sep">-</span>' +
+        '<input type="time" class="t-end" data-i="' + i + '" value="' + et + '">' +
+      '</td>' +
+      '<td contenteditable="true" class="plan" data-i="' + i + '" data-k="content">' + esc(r.content) + '</td>' +
+      '<td><select data-i="' + i + '" data-k="cat">' + opts + '</select></td>' +
+      '<td contenteditable="true" class="num" data-i="' + i + '" data-k="plan">' + r.plan + '</td>' +
+      '<td class="num eff-cell" data-eff="' + i + '">' + rowEffMin(state, r) + '</td>' +
+      '<td class="op-cell">' +
+        '<button class="mini-btn" data-up="' + i + '" title="上移" type="button">↑</button>' +
+        '<button class="mini-btn" data-down="' + i + '" title="下移" type="button">↓</button>' +
+        '<button class="mini-btn danger" data-del="' + i + '" title="删除" type="button">×</button>' +
+      '</td>';
+
+    frag.appendChild(tr);
   });
-  body.querySelectorAll("td[contenteditable]").forEach(td=>{
-    td.addEventListener("focus",()=>{
-      setTimeout(()=>{ td.scrollIntoViewIfNeeded?.(); },250);
+
+  body.appendChild(frag);
+
+  // 可编辑单元格
+  body.querySelectorAll("td[contenteditable]").forEach(td => {
+    td.addEventListener("keydown", e => {
+      if(e.key === "Enter" && td.dataset.k !== "content"){
+        e.preventDefault();
+        td.blur();
+      }
     });
-    td.addEventListener("blur", ()=>{
-      const i=+td.dataset.i, k=td.dataset.k;
-      let v=td.textContent.trim();
-      if(k==="plan"||k==="manualEff") v=parseFloat(v)||0;
-      state.rows[i][k]=v;
+    td.addEventListener("blur", () => {
+      const i = Number(td.dataset.i), k = td.dataset.k;
+      if(!state.rows[i]) return;
+      let v = td.textContent.trim();
+      if(k === "plan"){
+        v = Math.max(0, Math.round(num(v)));
+        td.textContent = v;
+      }
+      state.rows[i][k] = v;
       saveDB();
-      if(k!=="manualEff") refreshStats();
+      refreshStats();
+      renderHeader();
     });
   });
-  body.querySelectorAll("select[data-k='cat']").forEach(sel=>{
-    sel.addEventListener("change",()=>{
-      const i=+sel.dataset.i;
-      state.rows[i].cat=sel.value;
-      trClass(i);
-      saveDB(); refreshStats();
+
+  // 类别
+  body.querySelectorAll('select[data-k="cat"]').forEach(sel => {
+    sel.addEventListener("change", () => {
+      const i = Number(sel.dataset.i);
+      if(!state.rows[i]) return;
+      state.rows[i].cat = sel.value;
+      const tr = sel.closest("tr");
+      if(tr) tr.classList.toggle("rest", sel.value === "休息");
+      saveDB();
+      refreshStats();
+      renderHeader();
     });
   });
-  body.querySelectorAll(".t-start, .t-end").forEach(inp=>{
-    inp.addEventListener("change",()=>{
-      const i=+inp.dataset.i;
-      const start=body.querySelector(`.t-start[data-i="${i}"]`).value;
-      const end=body.querySelector(`.t-end[data-i="${i}"]`).value;
-      state.rows[i].time = start&&end?`${start}-${end}`:(start||end||"");
+
+  // 时间
+  body.querySelectorAll(".t-start, .t-end").forEach(inp => {
+    inp.addEventListener("change", () => {
+      const i = Number(inp.dataset.i);
+      if(!state.rows[i]) return;
+      const s = body.querySelector('.t-start[data-i="' + i + '"]').value;
+      const e = body.querySelector('.t-end[data-i="' + i + '"]').value;
+      state.rows[i].time = (s && e) ? (s + "-" + e) : (s || e || "");
       saveDB();
     });
   });
-  body.querySelectorAll(".row-del").forEach((b,i)=>{
-    b.onclick=()=>{ state.rows.splice(i,1); renderRows(); saveDB(); refreshStats(); };
-  });
-  // 拖拽排序
-  body.querySelectorAll("tr").forEach((tr,i)=>{
-    const handle=tr.querySelector(".drag-handle");
-    handle.addEventListener("dragstart",(e)=>{
-      dragIndex=i; tr.classList.add("dragging");
-      e.dataTransfer.effectAllowed="move";
-      e.dataTransfer.setData("text/plain",String(i));
+
+  // 操作按钮
+  body.querySelectorAll("[data-del]").forEach(b => {
+    b.addEventListener("click", () => {
+      const i = Number(b.dataset.del);
+      if(!state.rows[i]) return;
+      if(state.rows.length <= 1){ toast("至少保留一行"); return; }
+      state.rows.splice(i, 1);
+      renderRows(); saveDB(); refreshStats(); renderHeader();
     });
-    handle.addEventListener("dragend",()=>{ tr.classList.remove("dragging"); dragIndex=null; });
-    tr.addEventListener("dragover",(e)=>{ e.preventDefault(); e.dataTransfer.dropEffect="move"; });
-    tr.addEventListener("drop",(e)=>{
+  });
+  body.querySelectorAll("[data-up]").forEach(b => {
+    b.addEventListener("click", () => moveRow(Number(b.dataset.up), -1));
+  });
+  body.querySelectorAll("[data-down]").forEach(b => {
+    b.addEventListener("click", () => moveRow(Number(b.dataset.down), 1));
+  });
+
+  // 拖动排序
+  body.querySelectorAll("tr").forEach((tr, i) => {
+    const handle = tr.querySelector(".drag-handle");
+    handle.addEventListener("dragstart", e => {
+      dragIndex = i;
+      tr.classList.add("dragging");
+      try{
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", String(i));
+      }catch(err){}
+    });
+    handle.addEventListener("dragend", () => {
+      tr.classList.remove("dragging");
+      dragIndex = null;
+    });
+    tr.addEventListener("dragover", e => { e.preventDefault(); });
+    tr.addEventListener("drop", e => {
       e.preventDefault();
-      if(dragIndex===null||dragIndex===i) return;
-      const [moved]=state.rows.splice(dragIndex,1);
-      state.rows.splice(i,0,moved);
-      renderRows(); saveDB(); refreshStats();
+      if(dragIndex === null || dragIndex === i) return;
+      const moved = state.rows.splice(dragIndex, 1)[0];
+      state.rows.splice(i, 0, moved);
+      renderRows(); saveDB(); refreshStats(); renderHeader();
     });
   });
-}
-function trClass(i){
-  const tr = document.querySelector(`select[data-i="${i}"]`)?.closest("tr");
-  if(tr) tr.classList.toggle("rest", state.rows[i].cat==="休息");
-}
-function planMinTotal(){
-  let p=0;
-  state.rows.forEach(r=>{ if(SUBJECTS.includes(r.cat)) p += Number(r.plan)||0; });
-  return p;
-}
-function subjectPlanMin(subj){
-  return state.rows.filter(r=>r.cat===subj).reduce((a,r)=>a+(Number(r.plan)||0),0);
-}
-/* ================= 统计 ================= */
-function refreshStats(){
-  const planMin = planMinTotal();
-  const effSec = SUBJECTS.reduce((a,s)=>a+(state.eff[s]||0),0);
-  const effMin = Math.floor(effSec/60);
-  const rate = planMin>0 ? effMin/planMin : 0;
-  $("#planAllMin").textContent = planMin + " 分钟";
-  $("#planHourText").textContent = (planMin/60).toFixed(1) + " 小时";
-  $("#planHour").textContent = (planMin/60).toFixed(1) + " 小时";
-  const rb = $("#ratioBody");
-  rb.innerHTML = "";
-  SUBJECTS.forEach(s=>{
-    const eSec = state.eff[s]||0, eMin = Math.floor(eSec/60);
-    const planSubj = subjectPlanMin(s);
-    const planRatio = planMin>0 ? planSubj/planMin*100 : 0;
-    const finish = planSubj>0 ? eMin/planSubj*100 : 0;
-    rb.insertAdjacentHTML("beforeend",
-      `<tr><td>${s}</td><td class="num">${planSubj}</td><td class="num">${planRatio.toFixed(1)}%</td><td class="num">${eMin}</td><td class="num">${finish.toFixed(1)}%</td></tr>`);
-  });
-  rb.insertAdjacentHTML("beforeend",
-    `<tr><td><b>合计</b></td><td class="num"><b>${planMin}</b></td><td class="num"><b>100.0%</b></td><td class="num"><b>${effMin}</b></td><td class="num"><b>${(rate*100).toFixed(1)}%</b></td></tr>`);
-  updateLiveNumbers();
-  renderLogs();
-}
-// 轻量刷新：只更新数字，不重建列表/统计表结构（供每秒计时调用）
-function updateLiveNumbers(){
-  const planMin = planMinTotal();
-  const effSec = SUBJECTS.reduce((a,s)=>a+(state.eff[s]||0),0);
-  const effMin = Math.floor(effSec/60);
-  const rate = planMin>0 ? effMin/planMin : 0;
-  $("#doneAllMin").textContent = effMin + " 分钟";
-  $("#rateText").textContent = (rate*100).toFixed(1) + "%";
-  $("#finishPct").textContent = Math.round(rate*100) + "%";
-  $("#realHour").textContent = (effMin/60).toFixed(1) + " 小时";
-  const rows = $("#ratioBody").querySelectorAll("tr");
-  SUBJECTS.forEach((s,i)=>{
-    if(!rows[i]) return;
-    const eMin = Math.floor((state.eff[s]||0)/60);
-    const planSubj = subjectPlanMin(s);
-    const finish = planSubj>0 ? eMin/planSubj*100 : 0;
-    const tds = rows[i].querySelectorAll("td");
-    tds[3].textContent = eMin;
-    tds[4].textContent = finish.toFixed(1)+"%";
-  });
-  if(rows.length){
-    const last = rows[rows.length-1].querySelectorAll("td");
-    last[3].textContent = effMin;
-    last[4].textContent = (rate*100).toFixed(1)+"%";
-  }
-  // 表格有效时长列：未手填的行跟随专注+补录合计
-  state.rows.forEach((r,i)=>{
-    if(r.manualEff>0) return;
-    const td = document.querySelector(`td[data-i="${i}"][data-k="manualEff"]`);
-    if(td) td.textContent = effMinForRow(i);
-  });
-}
-/* ================= 补录（计入统计，生成正式记录） ================= */
-function renderAdjust(){
-  $("#adjustAdd").onclick=()=>{
-    const sub=$("#adjustSubject").value;
-    const content=$("#adjustContent").value.trim();
-    const min=parseFloat($("#adjustMin").value);
-    if(!min||min<=0){ alert("请输入有效的补录分钟数"); return; }
-    const sec=Math.round(min*60);
-    state.eff[sub]=(state.eff[sub]||0)+sec;
-    const ts=nowStr();
-    state.logs.push({subject:sub, content:content||"手动补录", start:ts, end:ts, sec:sec, manual:true});
-    $("#adjustContent").value="";
-    $("#adjustMin").value="";
-    saveDB(); refreshStats();
-  };
-  $("#adjustMin").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#adjustAdd").click(); });
 }
 
-/* ================= 专注记录（支持暂停） ================= */
-function currentLog(){
-  const last = state.logs[state.logs.length-1];
-  return last && !last.end ? last : null;
+function moveRow(i, dir){
+  const j = i + dir;
+  if(i < 0 || j < 0 || i >= state.rows.length || j >= state.rows.length) return;
+  const tmp = state.rows[i];
+  state.rows[i] = state.rows[j];
+  state.rows[j] = tmp;
+  renderRows(); saveDB(); refreshStats(); renderHeader();
 }
+
+function refreshStats(){
+  const planMin = planMinTotal(state);
+  const effMin = effMinTotal(state);
+  const rate = rateOf(state);
+
+  $("#planAllMin").textContent = planMin + " 分钟";
+  $("#planHourText").textContent = (planMin/60).toFixed(1) + " 小时";
+  $("#doneAllMin").textContent = effMin + " 分钟";
+  $("#rateText").textContent = (rate*100).toFixed(1) + "%";
+  $("#realHour").textContent = (effMin/60).toFixed(1) + " 小时";
+  $("#finishPct").textContent = Math.round(rate*100) + "%";
+  $("#streakShow").textContent = calcStreak() + " 天";
+  $("#infoDoneTime").textContent = effMin + " 分钟";
+  $("#infoTargetTime").textContent = planMin + " 分钟";
+  $("#planHour").textContent = (planMin/60).toFixed(1) + " 小时";
+
+  // 各科表
+  const rb = $("#ratioBody");
+  let html = "";
+  SUBJECTS.forEach(s => {
+    const plan = subjectPlanMin(state, s);
+    const eff = Math.floor(num(state.eff[s])/60);
+    const planRatio = planMin > 0 ? plan/planMin*100 : 0;
+    const done = plan > 0 ? Math.min(999, eff/plan*100) : (eff > 0 ? 100 : 0);
+    html += "<tr><td>" + s + '</td><td class="num">' + plan + '</td><td class="num">' +
+      planRatio.toFixed(1) + '%</td><td class="num">' + eff + '</td><td class="num">' +
+      done.toFixed(1) + "%</td></tr>";
+  });
+  html += '<tr><td><b>合计</b></td><td class="num"><b>' + planMin +
+    '</b></td><td class="num"><b>100.0%</b></td><td class="num"><b>' + effMin +
+    '</b></td><td class="num"><b>' + (rate*100).toFixed(1) + "%</b></td></tr>";
+  rb.innerHTML = html;
+
+  updateRowEffCells();
+  updateLiveNumbers();
+}
+
+function updateRowEffCells(){
+  document.querySelectorAll("[data-eff]").forEach(td => {
+    const i = Number(td.dataset.eff);
+    const row = state.rows[i];
+    if(row) td.textContent = rowEffMin(state, row);
+  });
+}
+
+function updateLiveNumbers(){
+  const planMin = planMinTotal(state);
+  const effMin = effMinTotal(state);
+  const rate = rateOf(state);
+
+  $("#doneAllMin").textContent = effMin + " 分钟";
+  $("#realHour").textContent = (effMin/60).toFixed(1) + " 小时";
+  $("#infoDoneTime").textContent = effMin + " 分钟";
+  $("#rateText").textContent = (rate*100).toFixed(1) + "%";
+  $("#finishPct").textContent = Math.round(rate*100) + "%";
+
+  // 各科表随计时实时更新，不用整表重绘
+  const rows = $("#ratioBody").querySelectorAll("tr");
+  SUBJECTS.forEach((s, i) => {
+    const tr = rows[i];
+    if(!tr) return;
+    const tds = tr.children;
+    const plan = subjectPlanMin(state, s);
+    const eff = Math.floor(num(state.eff[s])/60);
+    if(tds[3]) tds[3].textContent = eff;
+    if(tds[4]) tds[4].textContent = (plan > 0 ? Math.min(999, eff/plan*100) : (eff > 0 ? 100 : 0)).toFixed(1) + "%";
+  });
+  const lastTr = rows[rows.length - 1];
+  if(lastTr && lastTr.children.length >= 5){
+    lastTr.children[3].textContent = effMin;
+    lastTr.children[4].textContent = (rate*100).toFixed(1) + "%";
+  }
+
+  updateRowEffCells();
+
+  // 只更新进行中那条记录的时长，避免每秒整块重绘
+  const {log} = findLog();
+  if(log && timer.status !== "idle"){
+    const el = document.querySelector('[data-dur="' + log.id + '"]');
+    if(el) el.textContent = fmtHMS(sessionSec());
+  }
+}
+
+function calcStreak(){
+  const keys = Object.keys(db.days).filter(k => {
+    const d = db.days[k];
+    return d && Array.isArray(d.logs) && d.logs.length && effSecTotal(d) > 0;
+  }).sort();
+  if(!keys.length) return 0;
+
+  const set = new Set(keys);
+  let streak = 0;
+  const d = new Date();
+  d.setHours(0,0,0,0);
+  // 今天还没学，从昨天开始数，连续打卡不中断
+  const tk = d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+  if(!set.has(tk)) d.setDate(d.getDate() - 1);
+  for(;;){
+    const k = d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+    if(!set.has(k)) break;
+    streak++;
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
+}
+
+/* =======================================================
+   7. 记录列表 / 补录
+   ======================================================= */
 function renderLogs(){
   const box = $("#logList");
   box.innerHTML = "";
-  if(state.logs.length===0){
-    box.innerHTML = '<div class="log-empty">暂无专注记录，点击「开始专注」后自动记录</div>';
+
+  if(!state.logs.length){
+    box.innerHTML = '<div class="log-empty">还没有记录，点「开始专注」会自动生成一条</div>';
     return;
   }
-  state.logs.forEach((log,i)=>{
+
+  const frag = document.createDocumentFragment();
+  state.logs.slice().sort((a,b) => String(a.start).localeCompare(String(b.start))).forEach(log => {
     const item = document.createElement("div");
-    item.className="log-item";
-    const pausedTag = (!log.end && state.timerState==="paused") ? " · 已暂停" : "";
-    item.innerHTML = `
-      <div class="log-content"><b>${esc(log.content||"未填写内容")}</b><span>${log.start} → ${log.end||("进行中"+pausedTag)}</span></div>
-      <span class="log-subj ${state.timerState==='paused'&&!log.end?'paused':''} ${log.manual?'manual':''}">${esc(log.subject)}${log.manual?' · 补录':''}</span>
-      <span class="log-dur">${fmtHMS(log.sec)}</span>
-      <button class="log-del" title="删除">×</button>`;
-    item.querySelector(".log-del").onclick=()=>{
-      state.eff[log.subject] = Math.max(0,(state.eff[log.subject]||0)-log.sec);
-      state.logs.splice(i,1);
-      if(!currentLog()) state.timerState="idle";
-      saveDB(); refreshStats(); syncTimerUI();
-    };
-    box.appendChild(item);
+    item.className = "log-item";
+    const running = !log.end;
+    const paused = running && timer.status === "paused" && log.id === timer.logId;
+
+    item.innerHTML =
+      '<div class="log-content"><b>' + esc(log.content || "未填写内容") + '</b>' +
+        '<span>' + esc(log.start || "") + " → " + esc(log.end || "进行中") + (paused ? "（已暂停）" : "") + "</span></div>" +
+      '<span class="log-subj' + (paused ? " paused" : "") + (log.manual ? " manual" : "") + '">' +
+        esc(log.subject) + (log.manual ? " · 补录" : "") + "</span>" +
+      '<span class="log-dur" data-dur="' + log.id + '">' +
+        fmtHMS(log.id === timer.logId && timer.status !== "idle" ? sessionSec() : log.sec) + "</span>" +
+      '<button class="log-del" title="删除这条" type="button">×</button>';
+
+    item.querySelector(".log-del").addEventListener("click", () => deleteLog(log.id));
+    frag.appendChild(item);
   });
+  box.appendChild(frag);
 }
+/* 兼容旧名字 */
+function refreshLogs(){ renderLogs(); }
 
-let timerId=null;
-
-// tick：只负责UI刷新，不做秒数累加；全部靠时间戳差值算真实时长
-function tick(){
-  const last = currentLog();
-  if(!last) return;
-
-  let totalSec = last.pausedSec || 0;
-  if(state.timerState === "running"){
-      const deltaMs = Date.now() - last.startTs;
-      totalSec += Math.floor(deltaMs / 1000);
+function deleteLog(id){
+  const idx = state.logs.findIndex(l => l.id === id);
+  if(idx < 0) return;
+  if(timer.logId === id){
+    if(!confirm("这条记录正在进行中，删除会同时停止当前计时，确定？")) return;
+    cancelTimer();
+    return;
   }
-  last.sec = totalSec;
-  state.eff[state.curSubject] = totalSec;
-
-  $("#focusTime").textContent = fmtHMS(last.sec);
-  updateLiveNumbers();
-  scheduleSave();
+  state.logs.splice(idx, 1);
+  recalcEff(state);
+  saveDB();
+  renderLogs();
+  refreshStats();
+  renderHeader();
 }
 
-function syncTimerUI(){
-  const btn=$("#timerBtn"), end=$("#endBtn");
-  const st=state.timerState;
-  if(st==="running"){ btn.textContent="暂停"; end.style.display="inline-block"; }
-  else if(st==="paused"){ btn.textContent="继续"; end.style.display="inline-block"; }
-  else { btn.textContent="开始专注"; end.style.display="none"; }
-  const last=currentLog();
-  $("#focusTime").textContent = fmtHMS(last?last.sec:0);
+function addManualLog(){
+  const subj = $("#adjustSubject").value;
+  const content = $("#adjustContent").value.trim();
+  const min = num($("#adjustMin").value);
+
+  if(min <= 0){ toast("请填写大于 0 的分钟数"); $("#adjustMin").focus(); return; }
+  if(min > 1440){ toast("一次最多补录 1440 分钟"); return; }
+
+  const ts = nowStr();
+  state.logs.push({
+    id: uid(),
+    subject: subj,
+    content: content || "手动补录",
+    start: ts,
+    end: ts,
+    sec: Math.round(min * 60),
+    manual: true
+  });
+  recalcEff(state);
+
+  $("#adjustContent").value = "";
+  $("#adjustMin").value = "";
+  saveDB();
+  renderLogs();
+  refreshStats();
+  renderHeader();
+  toast("已补录 " + Math.round(min) + " 分钟");
 }
 
-$("#timerBtn").onclick=()=>{
-  if(state.timerState==="idle"){
-    // 开启新计时，记录时间戳
-    state.curSubject=$("#subjectSel").value;
-    state.curContent=$("#curContent").value.trim();
-    state.logs.push({
-      subject:state.curSubject,
-      content:state.curContent,
-      start:nowStr(),
-      startTs: Date.now(),
-      pausedSec:0,
-      end:null,
-      sec:0
+/* =======================================================
+   8. 待办
+   ======================================================= */
+function renderTodo(){
+  const box = $("#todoList");
+  const list = getTodos(activeDate);
+  box.innerHTML = "";
+
+  if(!list.length){
+    box.innerHTML = '<div class="log-empty">今天还没有待办，加一条开始吧</div>';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  list.forEach(t => {
+    const div = document.createElement("div");
+    div.className = "todo-item" + (t.done ? " done" : "");
+    div.innerHTML =
+      '<input type="checkbox" ' + (t.done ? "checked" : "") + '>' +
+      '<span class="todo-text">' + esc(t.text) + "</span>" +
+      '<span class="todo-meta">' + esc(t.subj) + (t.est ? " · " + t.est + " 分" : "") + "</span>" +
+      '<button class="mini-btn danger" type="button" title="删除">×</button>';
+
+    div.querySelector("input").addEventListener("change", e => {
+      t.done = e.target.checked;
+      saveDB();
+      renderTodo();
     });
-    state.timerState="running";
-    timerId=setInterval(tick,1000);
-  }else if(state.timerState==="running"){
-    // 暂停：把已经跑过的时间存入pausedSec
-    clearInterval(timerId);
-    const last=currentLog();
-    if(last){
-      const deltaMs = Date.now() - last.startTs;
-      last.pausedSec = last.pausedSec || 0;
-      last.pausedSec += Math.floor(deltaMs / 1000);
-    }
-    state.timerState="paused";
-  }else if(state.timerState==="paused"){
-    // 继续：重置开始时间戳，保留历史累计pausedSec
-    const last=currentLog();
-    if(last){
-       last.startTs = Date.now();
-    }
-    state.timerState="running";
-    timerId=setInterval(tick,1000);
-  }
-  saveDB(); syncTimerUI(); refreshStats();
-};
-
-$("#endBtn").onclick=()=>{
-  const last=currentLog();
-  if(last){
-    clearInterval(timerId);
-    let totalSec = last.pausedSec || 0;
-    if(state.timerState === "running"){
-        const deltaMs = Date.now() - last.startTs;
-        totalSec += Math.floor(deltaMs / 1000);
-    }
-    last.sec = totalSec;
-    state.eff[state.curSubject] = totalSec;
-    last.end=nowStr();
-  }
-  clearInterval(timerId);
-  state.timerState="idle";
-  saveDB(); syncTimerUI(); refreshStats();
-};
-
-$("#resetFocus").onclick=()=>{
-  clearInterval(timerId);
-  state.logs = state.logs.filter(l=>l.end);
-  state.timerState="idle";
-  saveDB(); syncTimerUI(); refreshStats();
-};
-
-$("#addRow").onclick=()=>{
-  state.rows.push({slot:"新时段",time:"",content:"",cat:"西综",plan:60});
-  renderRows(); saveDB(); refreshStats();
-};
-
-// 页面切回前台，立刻执行一次时间计算，不用等1秒定时器
-document.addEventListener('visibilitychange', ()=>{
-  if (!document.hidden) {
-    tick();
-  }
-});
-/* ================= 日期编辑联动 ================= */
-$("#planDate").addEventListener("blur",e=>{
-  let v=e.target.textContent.trim();
-  if(/^\d{4}-\d{1,2}-\d{1,2}$/.test(v)){
-    const [y,m,d]=v.split("-").map(Number);
-    v=`${y}-${pad(m)}-${pad(d)}`;
-  }
-  state.planDate=v; e.target.textContent=v;
-  saveDB(); autoCalc();
-});
-$("#examDate").addEventListener("blur",e=>{
-  let v=e.target.textContent.trim();
-  if(/^\d{4}-\d{1,2}-\d{1,2}$/.test(v)){
-    const [y,m,d]=v.split("-").map(Number);
-    v=`${y}-${pad(m)}-${pad(d)}`;
-  }
-  state.examDate=v; e.target.textContent=v;
-  db.meta.examDate=v; saveDB(); autoCalc();
-});
-$("#subjectSel").addEventListener("change",e=>{state.curSubject=e.target.value;saveDB();});
-$("#curContent").addEventListener("input",e=>{state.curContent=e.target.value;});
-/* ================= 视图切换 ================= */
-$("#tabToday").onclick=()=>switchView("today");
-$("#tabDiary").onclick=()=>{ switchView("diary"); renderDiary(); };
-$("#tabHistory").onclick=()=>{ switchView("history"); renderHistory(); };
-function switchView(v){
-  $("#tabToday").classList.toggle("active",v==="today");
-  $("#tabDiary").classList.toggle("active",v==="diary");
-  $("#tabHistory").classList.toggle("active",v==="history");
-  $("#viewToday").classList.toggle("active",v==="today");
-  $("#viewDiary").classList.toggle("active",v==="diary");
-  $("#viewHistory").classList.toggle("active",v==="history");
+    div.querySelector("button").addEventListener("click", () => {
+      const i = list.indexOf(t);
+      if(i >= 0) list.splice(i, 1);
+      saveDB();
+      renderTodo();
+    });
+    frag.appendChild(div);
+  });
+  box.appendChild(frag);
 }
-/* ================= 每日日记 ================= */
-let diaryKey = todayKey();
+
+/* =======================================================
+   9. 日记
+   ======================================================= */
+let diaryKey = null;
+let diaryTimer = null;
+
 function renderDiary(){
+  if(!diaryKey) diaryKey = activeDate;
   $("#diaryDate").value = diaryKey;
-  const d = getDay(diaryKey);
-  $("#diaryText").value = d.diary || "";
-  updateSaved();
+  const day = getDay(diaryKey);
+  $("#diaryText").value = day.diary || "";
+  $("#diarySaved").textContent = "";
   renderDiaryList();
 }
-function updateSaved(){
-  const t=new Date();
-  $("#diarySaved").textContent = `已保存 ${pad(t.getHours())}:${pad(t.getMinutes())}`;
-}
-let diarySaveTimer=null;
-function saveDiary(){
-  const d=getDay(diaryKey);
-  d.diary=$("#diaryText").value;
-  updateSaved();
-  if(diarySaveTimer) clearTimeout(diarySaveTimer);
-  diarySaveTimer=setTimeout(saveDB, 800);
-}
-$("#diaryDate").addEventListener("change",e=>{
-  if(e.target.value){ diaryKey=e.target.value; renderDiary(); }
-});
-$("#diaryText").addEventListener("input",saveDiary);
+
 function renderDiaryList(){
-  const box=$("#diaryList");
-  const keys=Object.keys(db.days).filter(k=>(db.days[k].diary||"").trim()).sort().reverse();
-  if(keys.length===0){ box.innerHTML='<div class="diary-empty">还没有日记，写第一篇吧</div>'; return; }
-  box.innerHTML="";
-  keys.slice(0,20).forEach(k=>{
-    const item=document.createElement("div");
-    item.className="diary-item";
-    const txt=db.days[k].diary.trim();
-    const preview=txt.length>60?txt.slice(0,60)+"…":txt;
-    item.innerHTML=`<div class="d">${k} ${weekOf(k)}</div><div class="t">${esc(preview)}</div>`;
-    item.onclick=()=>{ diaryKey=k; $("#diaryDate").value=k; $("#diaryText").value=db.days[k].diary||""; updateSaved(); };
-    box.appendChild(item);
-  });
-}
-/* ================= 历史总览 ================= */
-let calCursor = new Date();
-calCursor.setDate(1);
-function daySummary(key){
-  const d = db.days[key];
-  if(!d) return null;
-  const planMin = d.rows.filter(r=>SUBJECTS.includes(r.cat)).reduce((a,r)=>a+(Number(r.plan)||0),0);
-  const effSec = SUBJECTS.reduce((a,s)=>a+(d.eff[s]||0),0);
-  const effMin = Math.floor(effSec/60);
-  const rate = planMin>0 ? effMin/planMin*100 : 0;
-  return {planMin, effMin, hours:effMin/60, rate, logs:d.logs.length};
-}
-function renderSummary(){
-  const keys = Object.keys(db.days).filter(k=>daySummary(k)?.effMin>0);
-  const totalSec = keys.reduce((a,k)=>a+SUBJECTS.reduce((x,s)=>x+db.days[k].eff[s],0),0);
-  const totalMin = Math.floor(totalSec/60);
-  const hours = totalMin/60;
-  $("#sumDays").textContent = keys.length;
-  $("#sumHours").textContent = hours.toFixed(1);
-  $("#sumAvg").textContent = keys.length? (hours/keys.length).toFixed(1) : "0";
-  const avgRate = keys.length? keys.reduce((a,k)=>a+daySummary(k).rate,0)/keys.length : 0;
-  $("#sumRate").textContent = avgRate.toFixed(0)+"%";
-}
-function levelOf(rate, effMin){
-  if(effMin<=0) return "lv0";
-  if(rate<25) return "lv1";
-  if(rate<50) return "lv2";
-  if(rate<80) return "lv3";
-  return "lv4";
-}
-function renderCalendar(){
-  const grid = $("#calGrid");
-  grid.innerHTML = "";
-  const y=calCursor.getFullYear(), m=calCursor.getMonth();
-  $("#calMonth").textContent = `${y} 年 ${m+1} 月`;
-  ["日","一","二","三","四","五","六"].forEach(d=>{
-    const el=document.createElement("div"); el.className="dow"; el.textContent=d; grid.appendChild(el);
-  });
-  const firstDow = new Date(y,m,1).getDay();
-  const daysInMonth = new Date(y,m+1,0).getDate();
-  for(let i=0;i<firstDow;i++){
-    const e=document.createElement("div"); e.className="cal-cell empty"; grid.appendChild(e);
-  }
-  for(let d=1;d<=daysInMonth;d++){
-    const key=`${y}-${pad(m+1)}-${pad(d)}`;
-    const sum=daySummary(key);
-    const cell=document.createElement("div");
-    const lv = sum? levelOf(sum.rate,sum.effMin):"lv0";
-    cell.className=`cal-cell ${lv}`;
-    if(sum){
-      cell.innerHTML=`<div class="d">${d}</div><div class="h">${sum.hours.toFixed(1)}h</div><div class="p">${sum.rate.toFixed(0)}%</div>`;
-      cell.onclick=()=>openDetail(key);
-    }else{
-      cell.innerHTML=`<div class="d">${d}</div><div class="h"></div><div class="p"></div>`;
-    }
-    grid.appendChild(cell);
-  }
-}
-function renderHistoryTable(){
-  const body=$("#historyBody");
-  body.innerHTML="";
-  const keys=Object.keys(db.days).sort().reverse();
-  if(keys.length===0){
-    body.innerHTML='<tr><td colspan="7" style="color:var(--dim);padding:20px;">暂无历史记录</td></tr>';
+  const box = $("#diaryList");
+  const keys = Object.keys(db.days)
+    .filter(k => db.days[k] && typeof db.days[k].diary === "string" && db.days[k].diary.trim())
+    .sort().reverse();
+
+  if(!keys.length){
+    box.innerHTML = '<div class="diary-empty">还没有日记</div>';
     return;
   }
-  keys.forEach(key=>{
-    const s=daySummary(key);
-    const tr=document.createElement("tr");
-    tr.innerHTML=`
-      <td>${key}</td><td>${weekOf(key)}</td>
-      <td class="num">${s.planMin}</td><td class="num">${s.effMin}</td>
-      <td class="num">${s.hours.toFixed(1)}h</td><td class="num">${s.rate.toFixed(1)}%</td>
-      <td class="num">${s.logs}</td>`;
-    tr.onclick=()=>openDetail(key);
-    body.appendChild(tr);
+  box.innerHTML = "";
+  const frag = document.createDocumentFragment();
+
+  keys.slice(0, 20).forEach(k => {
+    const txt = db.days[k].diary.trim();
+    const preview = txt.length > 80 ? txt.slice(0, 80) + "…" : txt;
+    const item = document.createElement("div");
+    item.className = "diary-item";
+    item.innerHTML = '<div class="d">' + k + " " + weekOf(k) + '</div><div class="t">' + esc(preview) + "</div>";
+    item.addEventListener("click", () => {
+      diaryKey = k;
+      $("#diaryDate").value = k;
+      $("#diaryText").value = db.days[k].diary || "";
+      $("#diarySaved").textContent = "";
+    });
+    frag.appendChild(item);
   });
+  box.appendChild(frag);
 }
+
+function saveDiaryNow(){
+  if(!diaryKey) return;
+  const day = getDay(diaryKey);
+  day.diary = $("#diaryText").value;
+  saveDB();
+  const t = new Date();
+  $("#diarySaved").textContent = "已保存 " + pad(t.getHours()) + ":" + pad(t.getMinutes());
+  renderDiaryList();
+}
+
+/* =======================================================
+   10. 历史 / 日历
+   ======================================================= */
+let calCursor = (function(){
+  const d = new Date();
+  return new Date(d.getFullYear(), d.getMonth(), 1);
+})();
+
+function daySummary(key){
+  const d = db.days[key];
+  if(!d || typeof d !== "object") return null;
+  if(!Array.isArray(d.rows) || !Array.isArray(d.logs)) return null;
+  const planMin = planMinTotal(d);
+  const effMin = effMinTotal(d);
+  return {
+    planMin: planMin,
+    effMin: effMin,
+    hours: effMin/60,
+    rate: planMin > 0 ? Math.min(100, effMin/planMin*100) : 0,
+    logs: d.logs.length
+  };
+}
+
+function levelOf(rate, effMin){
+  if(effMin <= 0) return "lv0";
+  if(rate < 25) return "lv1";
+  if(rate < 50) return "lv2";
+  if(rate < 80) return "lv3";
+  return "lv4";
+}
+
+function renderSummary(){
+  const keys = Object.keys(db.days).filter(k => {
+    const s = daySummary(k);
+    return s && s.effMin > 0;
+  });
+  const totalMin = keys.reduce((a, k) => a + daySummary(k).effMin, 0);
+  const hours = totalMin / 60;
+
+  $("#sumDays").textContent = keys.length;
+  $("#sumHours").textContent = hours.toFixed(1);
+  $("#sumAvg").textContent = keys.length ? (hours/keys.length).toFixed(1) : "0";
+  const avgRate = keys.length
+    ? keys.reduce((a, k) => a + daySummary(k).rate, 0) / keys.length
+    : 0;
+  $("#sumRate").textContent = avgRate.toFixed(0) + "%";
+}
+
+function renderCalendar(){
+  const grid = $("#calGrid");
+  const y = calCursor.getFullYear(), m = calCursor.getMonth();
+  $("#calMonth").textContent = y + " 年 " + (m+1) + " 月";
+  grid.innerHTML = "";
+
+  ["日","一","二","三","四","五","六"].forEach(w => {
+    const el = document.createElement("div");
+    el.className = "dow";
+    el.textContent = w;
+    grid.appendChild(el);
+  });
+
+  const firstWeek = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m+1, 0).getDate();
+  const todayStr = todayKey();
+
+  for(let i = 0; i < firstWeek; i++){
+    const el = document.createElement("div");
+    el.className = "cal-cell empty";
+    grid.appendChild(el);
+  }
+
+  for(let d = 1; d <= daysInMonth; d++){
+    const key = y + "-" + pad(m+1) + "-" + pad(d);
+    const s = daySummary(key);
+    const el = document.createElement("div");
+    el.className = "cal-cell " + levelOf(s ? s.rate : 0, s ? s.effMin : 0) + (key === todayStr ? " today" : "");
+    el.innerHTML =
+      '<div class="d">' + d + "</div>" +
+      '<div class="h">' + (s && s.effMin > 0 ? s.effMin + "m" : "—") + "</div>" +
+      '<div class="p">' + (s && s.planMin > 0 ? Math.round(s.rate) + "%" : "") + "</div>";
+    if(s){
+      el.addEventListener("click", () => openDetail(key));
+    }
+    grid.appendChild(el);
+  }
+
+  const total = firstWeek + daysInMonth;
+  const tail = (7 - total % 7) % 7;
+  for(let i = 0; i < tail; i++){
+    const el = document.createElement("div");
+    el.className = "cal-cell empty";
+    grid.appendChild(el);
+  }
+}
+
+function renderHistoryTable(){
+  const tbody = $("#historyBody");
+  const keys = Object.keys(db.days).sort().reverse();
+  tbody.innerHTML = "";
+
+  if(!keys.length){
+    tbody.innerHTML = '<tr><td colspan="7" style="color:#6b7280;padding:14px;">还没有数据，先去「今日看板」记一笔</td></tr>';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  keys.forEach(k => {
+    const s = daySummary(k);
+    if(!s) return;
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      "<td>" + k + "</td><td>" + weekOf(k) + "</td>" +
+      '<td class="num">' + s.planMin + "</td>" +
+      '<td class="num">' + s.effMin + "</td>" +
+      '<td class="num">' + s.hours.toFixed(1) + "</td>" +
+      '<td class="num">' + s.rate.toFixed(1) + "%</td>" +
+      '<td class="num">' + s.logs + "</td>";
+    tr.addEventListener("click", () => openDetail(k));
+    frag.appendChild(tr);
+  });
+  tbody.appendChild(frag);
+}
+
 function renderHistory(){
   renderSummary();
   renderCalendar();
   renderHistoryTable();
 }
-$("#prevMonth").onclick=()=>{calCursor.setMonth(calCursor.getMonth()-1);renderCalendar();};
-$("#nextMonth").onclick=()=>{calCursor.setMonth(calCursor.getMonth()+1);renderCalendar();};
-/* ================= 数据备份：导出 / 导入 ================= */
-$("#exportBtn").onclick=()=>{
-  const blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download=`考研看板备份-${todayKey()}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(a.href);
-};
-$("#importBtn").onclick=()=>$("#importFile").click();
-$("#importFile").addEventListener("change",(e)=>{
-  const f=e.target.files[0];
-  if(!f) return;
-  const reader=new FileReader();
-  reader.onload=()=>{
-    try{
-      const data=JSON.parse(reader.result);
-      if(!data || typeof data!=="object" || !data.days) throw new Error("bad format");
-      db=data;
-      if(!db.meta) db.meta={examDate:"2026-12-19",title:"考研专注看板"};
-      saveDB();
-      alert("导入成功，页面即将刷新");
-      location.reload();
-    }catch(err){
-      alert("文件格式不对，导入失败");
-    }
-  };
-  reader.readAsText(f);
-  e.target.value="";
-});
+
+let detailKey = null;
 function openDetail(key){
-  const d=db.days[key]; if(!d) return;
-  const s=daySummary(key);
-  $("#detailTitle").textContent = `${key} ${weekOf(key)}`;
-  $("#detailPlan").textContent = s.planMin+" 分钟";
-  $("#detailEff").textContent = s.effMin+" 分钟";
-  $("#detailRate").textContent = s.rate.toFixed(1)+"%";
-  const box=$("#detailLogs"); box.innerHTML="";
-  if(d.logs.length===0){
-    box.innerHTML='<div class="log-empty">当天无专注记录</div>';
+  const s = daySummary(key);
+  if(!s){ toast("这一天还没有数据"); return; }
+  detailKey = key;
+
+  $("#detailTitle").textContent = key + " " + weekOf(key);
+  $("#detailPlan").textContent = s.planMin + " 分钟";
+  $("#detailEff").textContent = s.effMin + " 分钟";
+  $("#detailRate").textContent = s.rate.toFixed(1) + "%";
+
+  const box = $("#detailLogs");
+  const logs = db.days[key].logs || [];
+  if(!logs.length){
+    box.innerHTML = '<div class="log-empty">这一天没有记录</div>';
   }else{
-    d.logs.forEach(log=>{
-      const item=document.createElement("div");
-      item.className="log-item";
-      item.innerHTML=`
-        <div class="log-content"><b>${esc(log.content||"未填写内容")}</b><span>${log.start} → ${log.end||"进行中"}</span></div>
-        <span class="log-subj">${esc(log.subject)}</span>
-        <span class="log-dur">${fmtHMS(log.sec)}</span>`;
-      box.appendChild(item);
+    box.innerHTML = "";
+    logs.forEach(l => {
+      const div = document.createElement("div");
+      div.className = "log-item";
+      div.style.gridTemplateColumns = "1fr auto auto";
+      div.innerHTML =
+        '<div class="log-content"><b>' + esc(l.content || "未填写") + "</b><span>" +
+        esc(l.start || "") + " → " + esc(l.end || "进行中") + "</span></div>" +
+        '<span class="log-subj' + (l.manual ? " manual" : "") + '">' + esc(l.subject) + (l.manual ? "·补录" : "") + "</span>" +
+        '<span class="log-dur">' + fmtHMS(l.sec) + "</span>";
+      box.appendChild(div);
     });
   }
   $("#mask").classList.add("open");
 }
-$("#closeDetail").onclick=()=>$("#mask").classList.remove("open");
-$("#mask").onclick=e=>{if(e.target===$("#mask"))$("#mask").classList.remove("open");};
-/* ================= 初始化 ================= */
-document.querySelector(".brand").textContent = db.meta.title;
-$("#planDate").textContent=state.planDate;
-$("#examDate").textContent=state.examDate;
-$("#subjectSel").value=state.curSubject;
-$("#curContent").value=state.curContent;
-// 兼容刷新后恢复：未归档记录标记为暂停，需手动继续
-if(state.timerState==="running") state.timerState="paused";
-renderRows();
-autoCalc();
-refreshStats();
-renderAdjust();
-syncTimerUI();
+
+/* =======================================================
+   11. 视图切换 & 日期切换
+   ======================================================= */
+const VIEWS = ["Today","Diary","History","Setting"];
+function switchView(v){
+  VIEWS.forEach(n => {
+    $("#view" + n).classList.toggle("active", n === v);
+    $("#tab" + n).classList.toggle("active", n === v);
+  });
+  if(v === "Diary") renderDiary();
+  if(v === "History") renderHistory();
+  if(v === "Setting") fillSetting();
+}
+
+function canSwitchDate(target){
+  if(timer.status === "idle") return true;
+  if(timer.dayKey === target) return true;
+  return confirm("当前正在计时，切换日期会先结束并保存这次记录。继续吗？");
+}
+
+function changeDate(key){
+  key = normDate(key);
+  if(!key){ toast("日期格式不对，应为 2026-11-14"); return false; }
+  if(key === activeDate){ renderHeader(); return true; }
+  if(!canSwitchDate(key)){ renderHeader(); return false; }
+
+  if(timer.status !== "idle") endTimer(true);
+
+  activeDate = key;
+  state = getDay(key);
+  $("#planDate").textContent = activeDate;
+  renderHeader();
+  renderRows();
+  refreshStats();
+  renderLogs();
+  renderTodo();
+  if(!diaryKey || !$("#viewDiary").classList.contains("active")){
+    // 日记页跟随当前日期，但不强行覆盖用户已选日期
+  }
+  saveDB();
+  return true;
+}
+
+/* =======================================================
+   12. 设置
+   ======================================================= */
+function fillSetting(){
+  $("#settingSound").checked = settings.sound;
+  $("#settingNotify").checked = settings.notify;
+  $("#setPomFocus").value = settings.pomFocus;
+  $("#setPomShort").value = settings.pomShort;
+  $("#setPomLong").value = settings.pomLong;
+  $("#setPomRound").value = settings.pomRound;
+}
+
+function saveSetting(){
+  settings.sound = $("#settingSound").checked;
+  settings.notify = $("#settingNotify").checked;
+  settings.pomFocus = Math.round(clamp($("#setPomFocus").value, 5, 180));
+  settings.pomShort = Math.round(clamp($("#setPomShort").value, 1, 60));
+  settings.pomLong = Math.round(clamp($("#setPomLong").value, 5, 90));
+  settings.pomRound = Math.round(clamp($("#setPomRound").value, 2, 10));
+
+  db.meta.settings = Object.assign({}, settings);
+
+  if(settings.notify && "Notification" in window && Notification.permission !== "granted"){
+    Notification.requestPermission();
+  }
+  // 空闲时同步番茄当前阶段时长
+  if(timer.mode === "pomodoro" && timer.status === "idle"){
+    timer.phaseTotal = (timer.phase === "focus" ? settings.pomFocus : settings.pomShort) * 60;
+    renderTimer();
+  }
+  saveDB();
+  fillSetting();
+  toast("设置已保存");
+}
+
+/* =======================================================
+   13. 导入导出
+   ======================================================= */
+function exportBackup(){
+  const out = clone(db);
+  if(out.meta) out.meta.timer = null;
+  const json = JSON.stringify(out, null, 2);
+
+  if(NATIVE){
+    NATIVE_API.invoke("write_backup", { json: json })
+      .then(p => toast("已备份到 " + p))
+      .catch(err => alert("备份失败：" + err));
+    return;
+  }
+
+  const blob = new Blob([json], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "考研学习备份_" + todayKey() + ".json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast("备份已导出，存好它");
+}
+
+function importBackup(file){
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const src = JSON.parse(e.target.result);
+      if(!src || !src.days || typeof src.days !== "object") throw new Error("格式不对");
+      if(!confirm("导入会覆盖当前全部数据，确定吗？")) return;
+
+      const next = defaultDB();
+      next.days = src.days;
+      next.todos = (src.todos && typeof src.todos === "object") ? src.todos : {};
+      if(src.meta){
+        if(normDate(src.meta.examDate)) next.meta.examDate = normDate(src.meta.examDate);
+        next.meta.settings = normalizeSettings(src.meta.settings);
+        next.meta.mode = src.meta.mode === "pomodoro" ? "pomodoro" : "stopwatch";
+      }
+      next.meta.timer = null;
+
+      const json = JSON.stringify(next);
+      if(NATIVE){
+        NATIVE_API.invoke("db_save", { json: json, day: todayKey() })
+          .then(() => { toast("导入成功，正在刷新…"); setTimeout(() => location.reload(), 500); })
+          .catch(err => alert("导入失败：" + err));
+        return;
+      }
+      localStorage.setItem(DB_KEY, json);
+      toast("导入成功，正在刷新…");
+      setTimeout(() => location.reload(), 500);
+    }catch(err){
+      alert("导入失败：不是有效的备份文件。");
+    }
+  };
+  reader.readAsText(file);
+}
+
+/* =======================================================
+   14. 事件绑定
+   ======================================================= */
+function bindEvents(){
+
+  // 标签页
+  $("#tabToday").addEventListener("click", () => switchView("Today"));
+  $("#tabDiary").addEventListener("click", () => switchView("Diary"));
+  $("#tabHistory").addEventListener("click", () => switchView("History"));
+  $("#tabSetting").addEventListener("click", () => switchView("Setting"));
+
+  // 日期
+  $("#planDate").addEventListener("blur", e => {
+    const key = normDate(e.target.textContent);
+    if(!key){
+      toast("日期格式应为 2026-11-14");
+      e.target.textContent = activeDate;
+      return;
+    }
+    if(!changeDate(key)) e.target.textContent = activeDate;
+  });
+  $("#planDate").addEventListener("keydown", e => {
+    if(e.key === "Enter"){ e.preventDefault(); e.target.blur(); }
+  });
+
+  $("#examDate").addEventListener("blur", e => {
+    const key = normDate(e.target.textContent);
+    if(!key){
+      toast("考试日期格式应为 2026-12-19");
+      e.target.textContent = db.meta.examDate;
+      return;
+    }
+    db.meta.examDate = key;
+    e.target.textContent = key;
+    saveDB();
+    renderHeader();
+    toast("考试日期已更新");
+  });
+  $("#examDate").addEventListener("keydown", e => {
+    if(e.key === "Enter"){ e.preventDefault(); e.target.blur(); }
+  });
+
+  // 计时
+  $("#timerBtn").addEventListener("click", () => {
+    if(timer.status === "idle" || timer.status === "paused") startTimer();
+    else pauseTimer();
+  });
+  $("#endBtn").addEventListener("click", () => endTimer(false));
+  $("#resetFocus").addEventListener("click", () => {
+    if(timer.status === "idle"){ toast("当前没有进行中的计时"); return; }
+    if(!confirm("放弃本次？这段时间不会计入统计。")) return;
+    cancelTimer();
+  });
+
+  $("#timerModeSel").addEventListener("change", e => {
+    if(timer.status !== "idle"){
+      toast("先结束当前计时，才能切换模式");
+      e.target.value = timer.mode;
+      return;
+    }
+    timer.mode = e.target.value === "pomodoro" ? "pomodoro" : "stopwatch";
+    db.meta.mode = timer.mode;
+    timer.phase = "focus";
+    timer.phaseTotal = settings.pomFocus * 60;
+    timer.round = 0;
+    settings = db.meta.settings;
+    renderTimer();
+    saveDB();
+    toast(timer.mode === "pomodoro" ? "已切换到番茄钟" : "已切换到正计时");
+  });
+
+  $("#subjectSel").addEventListener("change", e => {
+    timer.subject = e.target.value;
+    if(timer.status === "idle"){ saveSoon(); }
+  });
+  $("#curContent").addEventListener("input", () => {
+    if(timer.status === "idle"){ timer.content = $("#curContent").value.trim(); }
+  });
+  $("#curContent").addEventListener("keydown", e => {
+    if(e.key === "Enter"){
+      e.preventDefault();
+      if(timer.status === "idle") startTimer();
+    }
+  });
+
+  // 待办
+  $("#todoAddBtn").addEventListener("click", () => {
+    const text = $("#todoText").value.trim();
+    if(!text){ toast("先写待办内容"); $("#todoText").focus(); return; }
+    const list = getTodos(activeDate);
+    list.push({
+      id: uid(),
+      subj: $("#todoSubj").value,
+      text: text,
+      est: Math.max(0, Math.round(num($("#todoEst").value))),
+      done: false
+    });
+    $("#todoText").value = "";
+    $("#todoEst").value = "";
+    saveDB();
+    renderTodo();
+  });
+  $("#todoText").addEventListener("keydown", e => {
+    if(e.key === "Enter"){ e.preventDefault(); $("#todoAddBtn").click(); }
+  });
+
+  // 计划表
+  $("#addRow").addEventListener("click", () => {
+    state.rows.push({slot:"新时段", time:"", content:"", cat:"西综", plan:60});
+    renderRows(); saveDB(); refreshStats(); renderHeader();
+  });
+
+  // 补录
+  $("#adjustAdd").addEventListener("click", addManualLog);
+  $("#adjustMin").addEventListener("keydown", e => {
+    if(e.key === "Enter"){ e.preventDefault(); addManualLog(); }
+  });
+
+  // 清空
+  $("#clearTodayBtn").addEventListener("click", () => {
+    if(!confirm("清空今天的全部专注记录？计划表会保留。此操作不可恢复。")) return;
+    if(timer.status !== "idle") cancelTimer();
+    state.logs = [];
+    recalcEff(state);
+    saveDB();
+    renderLogs(); refreshStats(); renderHeader();
+    toast("已清空今天的记录");
+  });
+
+  // 日记
+  $("#diaryDate").addEventListener("change", e => {
+    const key = normDate(e.target.value);
+    if(!key){ e.target.value = diaryKey; return; }
+    saveDiaryNow();
+    diaryKey = key;
+    $("#diaryDate").value = key;
+    $("#diaryText").value = getDay(key).diary || "";
+    $("#diarySaved").textContent = "";
+  });
+  $("#diaryText").addEventListener("input", () => {
+    clearTimeout(diaryTimer);
+    diaryTimer = setTimeout(saveDiaryNow, 900);
+  });
+  $("#diaryText").addEventListener("blur", saveDiaryNow);
+
+  // 日历
+  $("#prevMonth").addEventListener("click", () => {
+    calCursor.setMonth(calCursor.getMonth() - 1);
+    renderCalendar();
+  });
+  $("#nextMonth").addEventListener("click", () => {
+    calCursor.setMonth(calCursor.getMonth() + 1);
+    renderCalendar();
+  });
+
+  // 备份
+  $("#exportBtn").addEventListener("click", exportBackup);
+  $("#importBtn").addEventListener("click", () => $("#importFile").click());
+  $("#importFile").addEventListener("change", e => {
+    const f = e.target.files && e.target.files[0];
+    if(f) importBackup(f);
+    e.target.value = "";
+  });
+
+  // 设置
+  $("#saveSettingBtn").addEventListener("click", saveSetting);
+
+  // 弹窗
+  $("#closeDetail").addEventListener("click", () => $("#mask").classList.remove("open"));
+  $("#mask").addEventListener("click", e => {
+    if(e.target === $("#mask")) $("#mask").classList.remove("open");
+  });
+  $("#gotoDay").addEventListener("click", () => {
+    const key = detailKey;
+    $("#mask").classList.remove("open");
+    if(!key) return;
+    if(!changeDate(key)) return;
+    switchView("Today");
+    toast("已切换到 " + key);
+  });
+
+  // 首次交互解锁声音
+  document.addEventListener("pointerdown", ensureAudio, {once:true});
+
+  // 快捷键：空格开始/暂停（不在输入框里时）
+  document.addEventListener("keydown", e => {
+    const t = e.target;
+    const typing = t && (
+      t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" ||
+      t.isContentEditable
+    );
+    if(typing) return;
+    if(e.code === "Space" && !e.ctrlKey && !e.metaKey){
+      e.preventDefault();
+      if(timer.status === "running") pauseTimer(); else startTimer();
+    }
+  });
+
+  // 离开提示
+  window.addEventListener("beforeunload", e => {
+    saveDB();
+    if(timer.status === "running"){
+      e.preventDefault();
+      e.returnValue = "正在计时，确定离开？";
+      return e.returnValue;
+    }
+  });
+
+  // 页面切回前台，校准一次
+  document.addEventListener("visibilitychange", () => {
+    if(!document.hidden && timer.status === "running"){
+      tick();
+    }
+  });
+}
+
+/* =======================================================
+   15. 启动
+   ======================================================= */
+function init(){
+  if(!storageOK) $("#storageWarn").style.display = "block";
+
+  const t = db.meta.timer;
+  if(t && t.elapsed > 0){
+    activeDate = db.days[t.dayKey] ? t.dayKey : activeDate;
+    state = getDay(activeDate);
+  }
+
+  $("#timerModeSel").value = db.meta.mode;
+  timer.mode = db.meta.mode;
+  timer.phaseTotal = settings.pomFocus * 60;
+
+  restoreTimer();
+
+  renderHeader();
+  renderRows();
+  refreshStats();
+  renderLogs();
+  renderTodo();
+  renderTimer();
+  renderHistory();
+
+  if(timer.status !== "idle"){
+    $("#subjectSel").value = timer.subject;
+    $("#curContent").value = timer.content;
+  }
+
+  // 恢复的如果是暂停状态，按钮显示"继续"
+  renderTimer();
+
+  bindEvents();
+
+  // 每分钟刷新一次剩余天数
+  setInterval(() => {
+    renderHeader();
+    if(timer.status === "idle") renderTimer();
+  }, 60000);
+}
+
+function bindNativeUi(){
+  const openBtn = $("#openDataDirBtn");
+  const backupBtn = $("#backupNowBtn");
+  const dirText = $("#dataDirText");
+
+  if(!NATIVE){
+    if(openBtn) openBtn.style.display = "none";
+    if(backupBtn) backupBtn.style.display = "none";
+    if(dirText) dirText.textContent = "浏览器模式：数据存在浏览器本地，换浏览器或清缓存会丢，建议常用「导出备份」。";
+    return;
+  }
+
+  openBtn.addEventListener("click", () => {
+    NATIVE_API.invoke("open_data_dir").catch(() => toast("打不开文件夹，请手动到数据目录"));
+  });
+  backupBtn.addEventListener("click", () => {
+    const out = clone(db);
+    if(out.meta) out.meta.timer = null;
+    NATIVE_API.invoke("write_backup", { json: JSON.stringify(out, null, 2) })
+      .then(p => toast("已备份到 " + p))
+      .catch(err => toast("备份失败：" + err));
+  });
+  NATIVE_API.invoke("data_dir")
+    .then(p => { dirText.textContent = p; })
+    .catch(() => { dirText.textContent = "读取失败，请到 data 文件夹查看"; });
+}
+
+async function boot(){
+  let firstRun = false;
+
+  if(NATIVE){
+    try{
+      RAW_DB = await NATIVE_API.invoke("db_load");
+    }catch(e){
+      RAW_DB = null;
+      console.error("读取数据失败", e);
+    }
+    firstRun = !RAW_DB;
+  }else{
+    try{ RAW_DB = localStorage.getItem(DB_KEY); }
+    catch(e){ RAW_DB = null; storageOK = false; }
+  }
+
+  db = loadDB();
+  settings = db.meta.settings;
+  activeDate = todayKey();
+  state = getDay(activeDate);
+
+  init();
+  bindNativeUi();
+
+  // 首次启动：立刻落一次盘，生成 data.json 和当天的每日快照
+  if(NATIVE && firstRun) saveDB();
+}
+
+boot();
 </script>
 </body>
 </html>
-<!-- （注：内容由AI生成） -->
